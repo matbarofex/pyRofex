@@ -1,0 +1,11 @@
+*.pyc
+.git/
+.idea/
+.idea_modules/
+lib/
+include/
+bin/
+build/
+dist/
+src/pyRofex.egg-info/
+samples/

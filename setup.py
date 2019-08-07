@@ -27,7 +27,6 @@ setuptools.setup(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Intended Audience :: Information Technology",
-        "Intended Audience :: Financial Industry",
         "Intended Audience :: Science/Research",
         "Topic :: Office/Business :: Financial :: Investment",
         "Topic :: Software Development"
