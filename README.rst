@@ -11,15 +11,32 @@ Although, we recommend to take a look at the official `API documentation <http:/
 
 Installing
 ----------
-*pyRofex* is avilable at Python Package Index (PyPI) repository. Install and update using `pip <https://pip.pypa.io/en/stable/quickstart/>`_\ :
+*pyRofex* is available at the `Python Package Index <https://pypi.org/project/pyrofex>`_ repository. Install and update using `pip <https://pip.pypa.io/en/stable/quickstart/>`_\ :
 
 .. code-block:: python
 
    pip install -U pyRofex
 
+
+API Credentials
+---------------
+In order to use the library you need to have the correct authentication credentials for the environment.
+
+To get new credentials:
+
+- **REMARKET**: go to `Remarket Website <https://remarkets.primary.ventures/>`_  and create an account for free.
+
+- **LIVE**: contact MPI (Market and Platform Integration) team. (mail: mpi@primary.com.ar)
+
+Dependencies
+------------
+- `requests <https://pypi.org/project/requests/>`_\: 2.20.0 or higher
+- `simplejson <https://pypi.org/project/simplejson/>`_\: 3.10.0 or higher
+- `enum34 <https://pypi.org/project/enum34/>`_\: 1.1.6 or higher
+- `websocket-client <https://pypi.org/project/websocket_client/>`_\: 0.54.0 or higher
+
 Features
 --------
-
 This sections describe the functionality and components of the library.
 
 Available methods
@@ -94,7 +111,7 @@ How to use it
 
 Once the library is install, we import and initialize it.
 
-The initialization sets the user, password and account to the environment specified. Then, trys to authenticate with the given user/password.
+The initialization sets the user, password and account to the environment specified. Then, try to authenticate with the given user/password.
 
 If the authentication fails, an ApiException is raised.
 
