@@ -16,9 +16,9 @@ from .components.enums import TimeInForce
 from .components.enums import Market
 
 
-"""
-************* Initialization functions *************
-"""
+# ######################################################
+# ##            Initialization functions              ##
+# ######################################################
 
 
 def initialize(user, password, account, environment):
@@ -73,9 +73,9 @@ def _set_environment_parameters(user, password, account, environment):
     globals.environment_config[environment]["account"] = account
 
 
-"""
-************* REST functions *************
-"""
+# ######################################################
+# ##                REST functions                    ##
+# ######################################################
 
 
 def get_segments(environment=None):
@@ -333,9 +333,9 @@ def get_trade_history(ticker, start_date, end_date, market=Market.ROFEX, environ
     return client.get_trade_history(ticker, start_date, end_date, market)
 
 
-""" 
-************* Websocket functions ************* 
-"""
+# ######################################################
+# ##              Websocket functions                 ##
+# ######################################################
 
 
 def init_websocket_connection(market_data_handler=None,
@@ -550,9 +550,9 @@ def set_websocket_exception_handler(handler, environment=None):
     client.set_exception_handler(handler)
 
 
-"""
-************* Validations functions *************
-"""
+# ######################################################
+# ##              Validations functions               ##
+# ######################################################
 
 
 def _validate_environment(environment):
