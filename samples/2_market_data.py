@@ -21,9 +21,9 @@ import datetime
 import pyRofex
 
 # 1-Initialize the environment
-pyRofex.initialize(user="fzanuso211",
-                   password="Ukaeae1&",
-                   account="REM211",
+pyRofex.initialize(user="XXXXXXX",
+                   password="XXXXXXX",
+                   account="XXXXXXX",
                    environment=pyRofex.Environment.REMARKET)
 
 # 2-Set the instrument to use
