@@ -63,6 +63,7 @@ Functions
 * **get_segments**\ : gets a list of valid segments.
 * **get_all_instruments**\ : gets a list of all available instruments.
 * **get_detailed_instruments**\ : gets a detailed list of all available instruments.
+* **get_instrument_details**\ : gets the details of a single instrument.
 * **get_market_data**\ : gets market data information for an instrument.
 * **get_trade_history**\ : gets a list of historic trades for an instrument.
 * **send_order**\ : sends a new order to the Market.
@@ -88,8 +89,11 @@ Functions
 * **market_data_subscription**\ : sends a Market Data Subscription Message through the connection.
 * **order_report_subscription**\ : sends an Order Report Subscription Message through the connection.
 * **add_websocket_market_data_handler** \**: adds a new Market Data handler to the Websocket Client. This handler is going to be call when a new Market Data Message is received.
+* **remove_websocket_market_data_handler** \**: removes a Market Data handler from the handlers list in the Websocket Client.
 * **add_websocket_order_report_handler** \**: adds a new Order Report handler to the Websocket Client. This handler is going to be call when a new Order Report Message is received.
+* **remove_websocket_order_report_handler** \**: removes an Order Report handler from the handlers list in the Websocket Client.
 * **add_websocket_error_handler** \**: adds a new Error handler to the Websocket Client. This handler is going to be call when a new Error Message is received.
+* **remove_websocket_error_handler** \**: removes an Error handler from the handlers list in the Websocket Client.
 * **set_websocket_exception_handler**: sets an exception handler to the Websocket Client. This handler is going to be called when an Exception occurred in the client.
 
 ** **handlers** are pythons functions that will be call whenever the specific event occurred.
