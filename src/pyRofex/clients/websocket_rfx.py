@@ -53,7 +53,17 @@ class WebSocketClient():
         :param handler: function that is going to be call when a new Market Data Message is received.
         :type handler: callable.
         """
-        self.market_data_handlers.append(handler)
+        if handler not in self.market_data_handlers:
+            self.market_data_handlers.append(handler)
+
+    def remove_market_data_handler(self, handler):
+        """ Removes the Market Data handler from the handler list.
+
+        :param handler: function to be removed from the handler list.
+        :type handler: callable.
+        """
+        if handler in self.market_data_handlers:
+            self.market_data_handlers.remove(handler)
 
     def add_order_report_handler(self, handler):
         """ Adds a new Order Report handler to the handlers list.
@@ -61,7 +71,17 @@ class WebSocketClient():
         :param handler: function that is going to be call when a new Order Report Message is received.
         :type handler: callable.
         """
-        self.order_report_handlers.append(handler)
+        if handler not in self.order_report_handlers:
+            self.order_report_handlers.append(handler)
+
+    def remove_order_report_handler(self, handler):
+        """ Removes the Order Report handler from the handler list.
+
+        :param handler: function to be removed from the handler list.
+        :type handler: callable.
+        """
+        if handler in self.order_report_handlers:
+            self.order_report_handlers.remove(handler)
 
     def add_error_handler(self, handler):
         """ Adds a new Error handler to the handlers list.
@@ -69,7 +89,17 @@ class WebSocketClient():
         :param handler: function that is going to be call when a new Error Message is received.
         :type handler: callable.
         """
-        self.error_handlers.append(handler)
+        if handler not in self.error_handlers:
+            self.error_handlers.append(handler)
+
+    def remove_error_handler(self, handler):
+        """ Removes the Error handler from the handler list.
+
+        :param handler: function to be removed from the handler list.
+        :type handler: callable.
+        """
+        if handler in self.error_handlers:
+            self.error_handlers.remove(handler)
 
     def set_exception_handler(self, handler):
         """ Sets the Exception Handler.

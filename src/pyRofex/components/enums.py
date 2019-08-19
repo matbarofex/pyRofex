@@ -19,8 +19,14 @@ class Environment(Enum):
 class TimeInForce(Enum):
     """Time Modifier of the order that defines the time the order will be active.
     DAY: Order valid during the day. It will expires when the market close.
+    IOC: Immediate or Cancel
+    FOK: Fill or Kill
+    GTD: Good Till Date (Must send expireDate field).
     """
     DAY = 'Day'
+    ImmediateOrCancel = 'IOC'
+    FillOrKill = 'FOK'
+    GoodTillDate = 'GTD'
 
 
 class Market(Enum):

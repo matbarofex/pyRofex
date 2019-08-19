@@ -138,14 +138,39 @@ def get_detailed_instruments(environment=None):
     return client.get_detailed_instruments()
 
 
-def get_market_data(ticker, entries, depth=1, market=Market.ROFEX, environment=None):
+def get_instrument_details(ticker, market=Market.ROFEX, environment=None):
+    """Make a request to the API and get the details of the instrument.
+
+    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+
+    :param ticker: Instrument symbol to send in the request. Example: DODic19
+    :type ticker: str
+    :param market: Market ID related to the instrument. Default Market.ROFEX.
+    :type market: Market (Enum).
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Details of the instrument returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["rest_client"]
+    return client.get_instrument_details(ticker, market)
+
+
+def get_market_data(ticker, entries=None, depth=1, market=Market.ROFEX, environment=None):
     """Make a request to the API to get the Market Data Entries of the specified instrument.
 
     For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19
     :type ticker: str
-    :param entries: List of entries to send in the request. Example: [MarketDataEntry.BIDS, MarketDataEntry.OFFERS]
+    :param entries: List of entries to send in the request. Default: all available entries.
+    Example: [MarketDataEntry.BIDS, MarketDataEntry.OFFERS]
     :type entries: List of MarketDataEntry (Enum).
     :param depth: Specify the depth of the book to be request. Default: 1.
     :type depth: int
@@ -160,7 +185,7 @@ def get_market_data(ticker, entries, depth=1, market=Market.ROFEX, environment=N
     # Validations
     environment = _validate_environment(environment)
     _validate_initialization(environment)
-    _validate_market_data_entries(entries)
+    entries = _validate_market_data_entries(entries)
 
     # Get the client for the environment and make the request
     client = globals.environment_config[environment]["rest_client"]
@@ -192,16 +217,18 @@ def get_order_status(client_order_id, proprietary=None, environment=None):
 
     # Get the client for the environment and make the request
     client = globals.environment_config[environment]["rest_client"]
-    return client.get_order_status(client_order_id,
-                                   proprietary)
+    return client.get_order_status(client_order_id, proprietary)
 
 
 def send_order(ticker, size, order_type, side,
+               market=Market.ROFEX,
+               time_in_force=TimeInForce.DAY,
                account=None,
                price=None,
-               time_in_force=TimeInForce.DAY,
-               market=Market.ROFEX,
                cancel_previous=False,
+               iceberg=False,
+               expire_date=None,
+               display_quantity=None,
                environment=None):
     """Make a request to the API that send a new order to the Market.
 
@@ -215,17 +242,23 @@ def send_order(ticker, size, order_type, side,
     :type order_type: OrderType (Enum).
     :param side: Order side. Example: Side.BUY.
     :type side: Side (Enum).
+    :param market: Market ID related to the instrument. Default Market.ROFEX.
+    :type market: Market (Enum).
+    :param time_in_force: Order modifier that defines the active time of the order. Default TimeInForce.Day.
+    :type time_in_force: TimeInForce (Enum).
     :param account: Account to used. Default None: default account is used.
     :type account: str
     :param price: Order price. Default None: when no price is required.
     :type price: int
-    :param time_in_force: Order modifier that defines the active time of the order. Default TimeInForce.Day.
-    :type time_in_force: TimeInForce (Enum).
-    :param market: Market ID related to the instrument. Default Market.ROFEX.
-    :type market: Market (Enum).
     :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
     False: send the order without cancelling previous ones. Useful for replacing old orders. Default: False.
     :type cancel_previous: boolean.
+    :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+    :type iceberg: boolean.
+    :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+    :type expire_date: str (Enum).
+    :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+    :type display_quantity: int
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
     :return: Client Order ID and Proprietary of the order returned by the API.
@@ -244,7 +277,8 @@ def send_order(ticker, size, order_type, side,
     # Get the client for the environment and make the request
     client = globals.environment_config[environment]["rest_client"]
     return client.send_order(ticker, size, order_type, side, account,
-                             price, time_in_force, market, cancel_previous)
+                             price, time_in_force, market, cancel_previous,
+                             iceberg, expire_date, display_quantity)
 
 
 def cancel_order(client_order_id, proprietary=None, environment=None):
@@ -483,6 +517,7 @@ def add_websocket_market_data_handler(handler, environment=None):
 
     # Validations
     environment = _validate_environment(environment)
+    _validate_initialization(environment)
     _validate_handler(handler)
 
     # Get the client for the environment and adds the handler
@@ -503,6 +538,7 @@ def add_websocket_order_report_handler(handler, environment=None):
 
     # Validations
     environment = _validate_environment(environment)
+    _validate_initialization(environment)
     _validate_handler(handler)
 
     # Get the client for the environment and adds the handler
@@ -523,11 +559,66 @@ def add_websocket_error_handler(handler, environment=None):
 
     # Validations
     environment = _validate_environment(environment)
+    _validate_initialization(environment)
     _validate_handler(handler)
 
     # Get the client for the environment and adds the handler
     client = globals.environment_config[environment]["ws_client"]
     client.add_error_handler(handler)
+
+
+def remove_websocket_market_data_handler(handler, environment=None):
+    """Removes the Market Data handler from the Websocket Client.
+
+    :param handler: function to be removed from the handlers list.
+    :type handler: callable.
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Get the client for the environment and adds the handler
+    client = globals.environment_config[environment]["ws_client"]
+    client.remove_market_data_handler(handler)
+
+
+def remove_websocket_order_report_handler(handler, environment=None):
+    """Removes the Order Report handler from the Websocket Client.
+
+    :param handler: function to be removed from the handlers list.
+    :type handler: callable.
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Get the client for the environment and adds the handler
+    client = globals.environment_config[environment]["ws_client"]
+    client.remove_order_report_handler(handler)
+
+
+def remove_websocket_error_handler(handler, environment=None):
+    """Removes the Error handler from the Websocket Client.
+
+    :param handler: function to be removed from the handlers list.
+    :type handler: callable.
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Get the client for the environment and adds the handler
+    client = globals.environment_config[environment]["ws_client"]
+    client.remove_error_handler(handler)
 
 
 def set_websocket_exception_handler(handler, environment=None):
@@ -543,6 +634,7 @@ def set_websocket_exception_handler(handler, environment=None):
 
     # Validations
     environment = _validate_environment(environment)
+    _validate_initialization(environment)
     _validate_handler(handler)
 
     # Get the client for the environment and adds the handler
@@ -592,12 +684,21 @@ def _validate_initialization(environment):
 def _validate_market_data_entries(entries):
     """Validate if the list of entries are instance of the MarketDataEntry enum.
 
+    If the entry list is None or Empty, the full list of MarketDataEntry will be return.
+
     :param entries: list of entries to be validated.
     :type entries: list of MarketDataEntry (Enum).
-     """
-    for entry in entries:
-        if not isinstance(entry, MarketDataEntry):
-            raise ApiException("Invalid Market Data Entry: " + str(entry))
+    :return: a list of validated MarketDataEntry.
+    :rtype: List of MarketDataEntry (Enum).
+    """
+    if entries is None:
+        entries = [entry for entry in MarketDataEntry]
+    else:
+        for entry in entries:
+            if not isinstance(entry, MarketDataEntry):
+                raise ApiException("Invalid Market Data Entry: " + str(entry))
+
+    return entries
 
 
 def _validate_websocket_connection(environment):

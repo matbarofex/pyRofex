@@ -9,6 +9,8 @@ import simplejson
 
 from ..components import urls
 from ..components import globals
+from ..components.enums import OrderType
+from ..components.enums import TimeInForce
 from ..components.exceptions import ApiException
 
 
@@ -82,6 +84,20 @@ class RestClient:
         """
         return self.api_request(urls.detailed_instruments)
 
+    def get_instrument_details(self, ticker, market):
+        """Make a request to the API and get the details of the instrument.
+
+        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+
+        :param ticker: Instrument symbol to send in the request. Example: DODic19
+        :type ticker: str
+        :param market: Market ID related to the instrument. Default Market.ROFEX.
+        :type market: Market (Enum).
+        :return: Details of the instrument returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return self.api_request(urls.instrument_details.format(ticker=ticker, market=market.value))
+
     def get_market_data(self, ticker, entries, depth, market):
         """Make a request to the API to get the Market Data Entries of the specified instrument.
 
@@ -133,7 +149,10 @@ class RestClient:
         """
         return self.api_request(urls.all_orders_status.format(a=account))
 
-    def send_order(self, ticker, size, order_type, side, account, price, time_in_force, market, cancel_previous):
+    def send_order(self, ticker, size, order_type, side,
+                   account, price, time_in_force, market,
+                   cancel_previous, iceberg, expire_date,
+                   display_quantity):
         """Make a request to the API that send a new order to the Market.
 
         For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
@@ -155,20 +174,41 @@ class RestClient:
         :param market: Market ID related to the instrument.
         :type market: Market (Enum).
         :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
-        False: send the order without cancelling previous ones. Useful for replacing old orders. Default: False.
+        False: send the order without cancelling previous ones. Useful for replacing old orders.
         :type cancel_previous: boolean.
+        :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+        :type iceberg: boolean.
+        :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+        :type expire_date: str (Enum).
+        :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+        :type display_quantity: int
         :return: Client Order ID and Proprietary of the order returned by the API.
         :rtype: dict of JSON response.
         """
-        return self.api_request(urls.new_order[order_type].format(market=market.value,
-                                                                  ticker=ticker,
-                                                                  size=size,
-                                                                  type=order_type.value,
-                                                                  side=side.value,
-                                                                  time_force=time_in_force.value,
-                                                                  account=account,
-                                                                  price=price,
-                                                                  cancel_previous=cancel_previous))
+        new_order_url = urls.new_order
+
+        # Adds Optional Parameters
+        if order_type is OrderType.LIMIT:
+            new_order_url = new_order_url + urls.limit_order
+
+        if time_in_force is TimeInForce.GoodTillDate:
+            new_order_url = new_order_url + urls.good_till_date
+
+        if iceberg:
+            new_order_url = new_order_url + urls.iceberg
+
+        return self.api_request(new_order_url.format(market=market.value,
+                                                     ticker=ticker,
+                                                     size=size,
+                                                     type=order_type.value,
+                                                     side=side.value,
+                                                     time_force=time_in_force.value,
+                                                     account=account,
+                                                     price=price,
+                                                     cancel_previous=cancel_previous,
+                                                     iceberg=iceberg,
+                                                     expire_date=expire_date,
+                                                     display_quantity=display_quantity))
 
     def cancel_order(self, client_order_id, proprietary):
         """Make a request to the API and cancel the order specified.
