@@ -53,7 +53,7 @@ print("Order Status Response: {0}".format(order_status))
 # the market accept or reject the order or timeout is reach
 timeout = 5 # Time out 5 seconds
 
-if order_status["order"]["status"] == "PENDING_NEW" and timeout > 0:
+while order_status["order"]["status"] == "PENDING_NEW" and timeout > 0:
     time.sleep(1)
     order_status = pyRofex.get_order_status(order["order"]["clientId"])
 
