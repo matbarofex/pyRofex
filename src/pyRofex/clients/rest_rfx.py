@@ -232,16 +232,17 @@ class RestClient:
 
         :param path: path to the API resource.
         :type path: str
-        :param retry: True: update the token and resend the request if the response code is 401.
+        :param retry: (optional) True: update the token and resend the request if the response code is 401.
         False: raise an exception if the response code is 401.
-        :type proprietary: str
+        :type retry: str
         :return: response of the API.
         :rtype: dict of JSON response.
         """
         headers = {'X-Auth-Token': self.environment["token"]}
         response = requests.get(self._url(path),
                                 headers=headers,
-                                verify=self.environment["ssl"])
+                                verify=self.environment["ssl"],
+                                proxies=self.environment["proxies"])
 
         # Checks if the response code is 401 (Unauthorized)
         if response.status_code == 401:
@@ -262,7 +263,8 @@ class RestClient:
                    'X-Password': self.environment["password"]}
         response = requests.post(self._url(urls.auth),
                                  headers=headers,
-                                 verify=self.environment["ssl"])
+                                 verify=self.environment["ssl"],
+                                 proxies=self.environment["proxies"])
 
         if not response.ok:
             raise ApiException("Authentication fails. Incorrect User or Password")

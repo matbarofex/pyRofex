@@ -21,7 +21,7 @@ from .components.enums import Market
 # ######################################################
 
 
-def initialize(user, password, account, environment):
+def initialize(user, password, account, environment, proxies=None):
     """ Initialize the specified environment.
 
      Set the default user, password and account for the environment.
@@ -34,9 +34,11 @@ def initialize(user, password, account, environment):
     :type account: str
     :param environment: the environment that is gonna be initialized.
     :type environment: Environment (Enum)
+    :param proxies: (optional) Dictionary mapping protocol to the URL of the proxy.
+    :type proxies: dict
     """
     _validate_environment(environment)
-    _set_environment_parameters(user, password, account, environment)
+    _set_environment_parameters(user, password, account, environment, proxies)
     globals.environment_config[environment]["rest_client"] = RestClient(environment)
     globals.environment_config[environment]["ws_client"] = WebSocketClient(environment)
     set_default_environment(environment)
@@ -57,7 +59,7 @@ def set_default_environment(environment):
     globals.default_environment = environment
 
 
-def _set_environment_parameters(user, password, account, environment):
+def _set_environment_parameters(user, password, account, environment, proxies):
     """Configure the environment parameters into global configuration.
 
     Set the user, password and account into globals configuration.
@@ -67,10 +69,13 @@ def _set_environment_parameters(user, password, account, environment):
     :param password: the password used for authentication.
     :param account: user's default account.
     :param environment: the environment that is going to be configured.
+    :param proxies: (optional) Dictionary mapping protocol to the URL of the proxy.
+    :type proxies: dict
     """
     globals.environment_config[environment]["user"] = user
     globals.environment_config[environment]["password"] = password
     globals.environment_config[environment]["account"] = account
+    globals.environment_config[environment]["proxies"] = proxies
 
 
 # ######################################################
