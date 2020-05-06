@@ -7,7 +7,7 @@ Overview
 
 The library is designed to avoid developers hours of research and coding needed to connect with ROFEX APIs, so they could focused on the important part of their software.
 
-Although, we recommend to take a look at the official `API documentation <http://api.primary.com.ar/docs/Primary-API.pdf>`_ to get familiarize with the API Responses and functionality.
+Although, we recommend to take a look at the official `API documentation <https://apihub.primary.com.ar/assets/docs/Primary-API.pdf>`_ to get familiarize with the API Responses and functionality.
 
 Installing
 ----------
@@ -214,7 +214,7 @@ Websocket
 Official API Documentation
 ==========================
 
-For more detailed information about ROFEX Rest and Websocket APIs go to the `Primary API Documentation <http://api.primary.com.ar/docs/Primary-API.pdf>`_.
+For more detailed information about ROFEX Rest and Websocket APIs go to the `Primary API Documentation <https://apihub.primary.com.ar/assets/docs/Primary-API.pdf>`_.
 
 Acknowledgements
 ================
