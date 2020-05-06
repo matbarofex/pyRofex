@@ -21,7 +21,7 @@ class WebSocketClient():
     This client used a websocket implementation of the library websocket_client.
 
     - For more references of websocket_client library go to: https://pypi.org/project/websocket_client
-    - For more information about the API go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    - For more information about the API go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     """
     def __init__(self, environment):

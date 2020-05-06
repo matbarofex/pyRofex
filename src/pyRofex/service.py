@@ -86,7 +86,7 @@ def _set_environment_parameters(user, password, account, environment, proxies):
 def get_segments(environment=None):
     """Make a request to the API and get a list of valid segments.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param environment: The environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
@@ -106,7 +106,7 @@ def get_segments(environment=None):
 def get_all_instruments(environment=None):
     """Make a request to the API and get a list of all available instruments.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
@@ -126,7 +126,7 @@ def get_all_instruments(environment=None):
 def get_detailed_instruments(environment=None):
     """Make a request to the API and get a detailed list of all available instruments.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
@@ -146,7 +146,7 @@ def get_detailed_instruments(environment=None):
 def get_instrument_details(ticker, market=Market.ROFEX, environment=None):
     """Make a request to the API and get the details of the instrument.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19
     :type ticker: str
@@ -170,7 +170,7 @@ def get_instrument_details(ticker, market=Market.ROFEX, environment=None):
 def get_market_data(ticker, entries=None, depth=1, market=Market.ROFEX, environment=None):
     """Make a request to the API to get the Market Data Entries of the specified instrument.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19
     :type ticker: str
@@ -200,7 +200,7 @@ def get_market_data(ticker, entries=None, depth=1, market=Market.ROFEX, environm
 def get_order_status(client_order_id, proprietary=None, environment=None):
     """Make a request to the API to get the status of the specified order.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param client_order_id: Client Order ID of the order.
     :type client_order_id: str
@@ -237,7 +237,7 @@ def send_order(ticker, size, order_type, side,
                environment=None):
     """Make a request to the API that send a new order to the Market.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19.
     :type ticker: str
@@ -291,7 +291,7 @@ def cancel_order(client_order_id, proprietary=None, environment=None):
 
     The market will respond with a client order id, then you should verify the status of the request with this id.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param client_order_id: Client Order ID of the order.
     :type client_order_id: str
@@ -320,7 +320,7 @@ def cancel_order(client_order_id, proprietary=None, environment=None):
 def get_all_orders_status(account=None, environment=None):
     """Make a request to the API and get the status of all the orders associated with the account.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param account: Account associated with the orders. Default None: default account is used.
     :type account: str
@@ -347,7 +347,7 @@ def get_all_orders_status(account=None, environment=None):
 def get_trade_history(ticker, start_date, end_date, market=Market.ROFEX, environment=None):
     """Makes a request to the API and get trade history for the instrument specified.
 
-    For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19
     :type ticker: str

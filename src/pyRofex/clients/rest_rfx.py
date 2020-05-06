@@ -17,7 +17,7 @@ from ..components.exceptions import ApiException
 class RestClient:
     """ Rest Client that implements call to ROFEX REST API.
 
-    For more information about the API go to: http://api.primary.com.ar/docs/Primary-API.pdf
+    For more information about the API go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
     """
 
     def __init__(self, environment):
@@ -36,7 +36,7 @@ class RestClient:
     def get_trade_history(self, ticker, start_date, end_date, market):
         """Makes a request to the API and get trade history for the instrument.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param ticker: Ticker of the instrument to send in the request. Example: DODic19
         :type ticker: str
@@ -57,7 +57,7 @@ class RestClient:
     def get_segments(self):
         """Make a request to the API and get a list of valid segments.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :return: A list of valid ROFEXs segments returned by the API.
         :rtype: dict of JSON response.
@@ -67,7 +67,7 @@ class RestClient:
     def get_all_instruments(self):
         """Make a request to the API and get a list of all available instruments.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :return: A list of valid instruments returned by the API.
         :rtype: dict of JSON response.
@@ -77,7 +77,7 @@ class RestClient:
     def get_detailed_instruments(self):
         """Make a request to the API and get a list of all available instruments.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :return: A list of valid instruments returned by the API.
         :rtype: dict of JSON response.
@@ -87,7 +87,7 @@ class RestClient:
     def get_instrument_details(self, ticker, market):
         """Make a request to the API and get the details of the instrument.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param ticker: Instrument symbol to send in the request. Example: DODic19
         :type ticker: str
@@ -101,7 +101,7 @@ class RestClient:
     def get_market_data(self, ticker, entries, depth, market):
         """Make a request to the API to get the Market Data Entries of the specified instrument.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param ticker: Instrument symbol to send in the request. Example: DODic19
         :type ticker: str
@@ -125,7 +125,7 @@ class RestClient:
     def get_order_status(self, client_order_id, proprietary):
         """Make a request to the API to get the status of the specified order.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param client_order_id: Client Order ID of the order.
         :type client_order_id: str
@@ -140,7 +140,7 @@ class RestClient:
     def get_all_orders_by_account(self, account):
         """Make a request to the API and get the status of all the orders associated with the account.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param account: Account associated with the orders.
         :type account: str
@@ -155,7 +155,7 @@ class RestClient:
                    display_quantity):
         """Make a request to the API that send a new order to the Market.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param ticker: Instrument symbol to send in the request. Example: DODic19.
         :type ticker: str
@@ -215,7 +215,7 @@ class RestClient:
 
         The market will respond with a client order id, then you should verify the status of the request with this id.
 
-        For more detailed information go to: http://api.primary.com.ar/docs/Primary-API.pdf
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
         :param client_order_id: Client Order ID of the order.
         :type client_order_id: str
