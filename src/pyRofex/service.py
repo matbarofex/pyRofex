@@ -59,6 +59,23 @@ def set_default_environment(environment):
     globals.default_environment = environment
 
 
+def _set_environment_parameter(parameter, value, environment):
+    """Set environment parameter.
+
+    Set 'value' into the specified 'parameter' for the environment 'environment'.
+
+    :param parameter: parameter of the environment to be set.
+    :type parameter: string
+    :param value: new value for the parameter.
+    :type value: string
+    :param environment: the environment to set the parameter.
+    :type environment: Environment
+    """
+    environment = _validate_environment(environment)
+    _validate_parameter(parameter, environment)
+    globals.environment_config[environment][parameter] = value
+
+
 def _set_environment_parameters(user, password, account, environment, proxies):
     """Configure the environment parameters into global configuration.
 
@@ -650,6 +667,20 @@ def set_websocket_exception_handler(handler, environment=None):
 # ######################################################
 # ##              Validations functions               ##
 # ######################################################
+
+
+def _validate_parameter(parameter, environment):
+    """Check if the parameter exist for the environment.
+
+    If parameter does not exist then raise an ApiException.
+
+    :param parameter: Parameter to be validated.
+    :type parameter: string
+    :param environment: Environment to check for parameter.
+    :type environment: Environment (Enum).
+    """
+    if parameter not in globals.environment_config[environment]:
+        raise ApiException("Invalid parameter '%s' for the environment %s." % (parameter, environment.name))
 
 
 def _validate_environment(environment):

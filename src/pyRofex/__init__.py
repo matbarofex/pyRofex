@@ -6,6 +6,7 @@
 """
 from .service import initialize
 from .service import set_default_environment
+from .service import _set_environment_parameter
 
 from .service import init_websocket_connection
 from .service import close_websocket_connection
