@@ -12,9 +12,9 @@ default_environment = None
 # Environment specific configuration.
 environment_config = {
     Environment.REMARKET: {
-        "url": "http://api.remarkets.primary.com.ar/",
-        "ws": "ws://api.remarkets.primary.com.ar/",
-        "ssl": False,
+        "url": "https://api.remarkets.primary.com.ar/",
+        "ws": "wss://api.remarkets.primary.com.ar/",
+        "ssl": True,
         "proxies": None,
         "rest_client": None,
         "ws_client": None,
