@@ -494,7 +494,7 @@ def order_report_subscription(account=None, snapshot=True, handler=None, environ
     client.order_report_subscription(account, snapshot)
 
 
-def market_data_subscription(tickers, entries, market=Market.ROFEX, handler=None, environment=None):
+def market_data_subscription(tickers, entries, depth=1, market=Market.ROFEX, handler=None, environment=None):
     """Send a Market Data Subscription Message through the connection.
 
     :param tickers: list of the the instruments to be subscribe.
@@ -502,6 +502,8 @@ def market_data_subscription(tickers, entries, market=Market.ROFEX, handler=None
     :param entries: List of market data entries that want to be received.
     Example: [MarketDataEntry.BIDS, MarketDataEntry.OFFERS]
     :type entries: List of MarketDataEntry (Enum).
+    :param depth: Market depth to received. default: 1 (top of book)
+    :type depth: int
     :param market: Market id associated to the tickers. Default Market.ROFEX.
     :type market: Market (Enum).
     :param handler: function that is going to be call when a new Market Data Message is received. Default None.
@@ -523,7 +525,7 @@ def market_data_subscription(tickers, entries, market=Market.ROFEX, handler=None
 
     # Get the client for the environment and send the subscription message
     client = globals.environment_config[environment]["ws_client"]
-    client.market_data_subscription(tickers, entries, market)
+    client.market_data_subscription(tickers, entries, market, depth)
 
 
 def add_websocket_market_data_handler(handler, environment=None):

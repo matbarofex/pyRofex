@@ -206,7 +206,7 @@ class WebSocketClient():
         """
         self.ws_connection.close()
 
-    def market_data_subscription(self, tickers, entries, market):
+    def market_data_subscription(self, tickers, entries, market, depth):
         """ Creates and sends new Market Data Subscription Message through the connection.
 
         :param tickers: List of the tickers to subscribe.
@@ -216,6 +216,8 @@ class WebSocketClient():
         :type entries: List of MarketDataEntry (Enum).
         :param market: Market id associated to the tickers.
         :type market: Market (Enum).
+        :param depth: Market depth to received. default: 1 (top of book)
+        :type depth: int
         """
 
         # Iterates through the tickers list and creates a new list of Instrument String using the INSTRUMENT Template.
@@ -229,7 +231,8 @@ class WebSocketClient():
         entries_string = ",".join(entries)
 
         # Creates a Market Data Subscription Message using the Template.
-        message = messages.MARKET_DATA_SUBSCRIPTION.format(entries=entries_string,
+        message = messages.MARKET_DATA_SUBSCRIPTION.format(depth=depth,
+                                                           entries=entries_string,
                                                            symbols=instruments_string)
 
         # Send the message through the connection.
