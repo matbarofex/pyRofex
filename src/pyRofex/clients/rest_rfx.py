@@ -168,7 +168,7 @@ class RestClient:
         :param account: Account to used.
         :type account: str
         :param price: Order price.
-        :type price: int
+        :type price: float
         :param time_in_force: Order modifier that defines the active time of the order.
         :type time_in_force: TimeInForce (Enum).
         :param market: Market ID related to the instrument.
