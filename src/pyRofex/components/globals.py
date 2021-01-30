@@ -23,7 +23,8 @@ environment_config = {
         "password": None,
         "account": None,
         "initialized": False,
-        "proprietary": "PBCP"
+        "proprietary": "PBCP",
+        "heartbeat": 30
     },
     Environment.LIVE: {
         "url": "https://api.primary.com.ar/",
@@ -36,6 +37,7 @@ environment_config = {
         "password": None,
         "account": None,
         "initialized": False,
-        "proprietary": "api"
+        "proprietary": "api",
+        "heartbeat": 30
     }
 }

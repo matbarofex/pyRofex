@@ -125,7 +125,7 @@ class WebSocketClient():
 
         # Create a thread and target it to the run_forever function, then start it.
         self.ws_thread = threading.Thread(target=self.ws_connection.run_forever,
-                                          kwargs={"ping_interval": 270})
+                                          kwargs={"ping_interval": self.environment["heartbeat"]})
         self.ws_thread.start()
 
         # Wait 5 sec to establish the connection
@@ -189,7 +189,8 @@ class WebSocketClient():
         :param exception: exception raised.
         :type exception: exception object
         """
-        self.exception_handler(exception)
+        if self.exception_handler is not None:
+            self.exception_handler(exception)
 
     def on_close(self):
         """ Called when the connection was closed.
