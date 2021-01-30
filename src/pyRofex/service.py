@@ -271,7 +271,7 @@ def send_order(ticker, size, order_type, side,
     :param account: Account to used. Default None: default account is used.
     :type account: str
     :param price: Order price. Default None: when no price is required.
-    :type price: int
+    :type price: float
     :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
     False: send the order without cancelling previous ones. Useful for replacing old orders. Default: False.
     :type cancel_previous: boolean.
@@ -437,7 +437,7 @@ def init_websocket_connection(market_data_handler=None,
 
     if exception_handler is not None:
         _validate_handler(error_handler)
-        client.add_error_handler(exception_handler)
+        client.set_exception_handler(exception_handler)
 
     # Initiates the connection with the Websocket API
     client.connect()
