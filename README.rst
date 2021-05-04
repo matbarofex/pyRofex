@@ -9,6 +9,11 @@ The library is designed to avoid developers hours of research and coding needed 
 
 Although, we recommend to take a look at the official `API documentation <https://apihub.primary.com.ar/assets/docs/Primary-API.pdf>`_ to get familiarize with the API Responses and functionality.
 
+
+Warning
+----------
+pyRofex will only work with the websocket-client version between 0.54.0 and 0.57.0
+
 Installing
 ----------
 *pyRofex* is available at the `Python Package Index <https://pypi.org/project/pyrofex>`_ repository. Install and update using `pip <https://pip.pypa.io/en/stable/quickstart/>`_\ :
@@ -33,7 +38,7 @@ Dependencies
 - `requests <https://pypi.org/project/requests/>`_\: 2.20.0 or higher
 - `simplejson <https://pypi.org/project/simplejson/>`_\: 3.10.0 or higher
 - `enum34 <https://pypi.org/project/enum34/>`_\: 1.1.6 or higher
-- `websocket-client <https://pypi.org/project/websocket_client/>`_\: 0.54.0 or higher
+- `websocket-client <https://pypi.org/project/websocket_client/>`_\: Between 0.54.0 and 0.57.0
 
 Features
 --------
