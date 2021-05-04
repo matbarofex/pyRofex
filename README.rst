@@ -13,7 +13,6 @@ Although, we recommend to take a look at the official `API documentation <https:
 Warning
 ----------
 pyRofex will only work with the websocket-client version between 0.54.0 and 0.57.0
-<span style="color:yellow;">a</span>
 
 Installing
 ----------
