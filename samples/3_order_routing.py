@@ -10,8 +10,8 @@
 
     Steps:
     1-Initialize the environment
-    2-Get the best bid offer in the market for DODic19
-    3-Send a Buy Limit Order for DODic19 with the same price as the best bid
+    2-Get the best bid offer in the market for DLR/MAR22
+    3-Send a Buy Limit Order for DLR/MAR22 with the same price as the best bid
     4-Check the order status
     5-If order status is PENDING_NEW then we keep checking the status until the market accept or reject the order
     6-If the status is NEW, cancel the order
@@ -26,15 +26,15 @@ pyRofex.initialize(user="XXXXXXX",
                    account="XXXXXXX",
                    environment=pyRofex.Environment.REMARKET)
 
-# 2-Get the best bid offer in the market for DODic19
-md = pyRofex.get_market_data(ticker="DODic19",
+# 2-Get the best bid offer in the market for DLR/MAR22
+md = pyRofex.get_market_data(ticker="DLR/MAR22",
                              entries=[pyRofex.MarketDataEntry.BIDS])
 
 # Print the response
 print("Market Data Response: {0}".format(md))
 
-# 3-Send a Buy Limit Order for DODic19 with the same price as the best bid
-order = pyRofex.send_order(ticker="DODic19",
+# 3-Send a Buy Limit Order for DLR/MAR22 with the same price as the best bid
+order = pyRofex.send_order(ticker="DLR/MAR22",
                            side=pyRofex.Side.BUY,
                            size=10,
                            price=md["marketData"]["BI"][0]["price"],

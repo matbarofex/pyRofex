@@ -5,7 +5,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import time
 
-instrument = "OROJul20"
+instrument = "DLR/MAR22"
 
 # Create empty DataFrame to store MarketData
 prices = pd.DataFrame(columns=["Time", "Bid", "Offer", "Last"])
