@@ -149,6 +149,42 @@ class RestClient:
         """
         return self.api_request(urls.all_orders_status.format(a=account))
 
+    def get_account_position(self, account):
+        """Make a request to the API and get the account positions.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param account: Account associated with the orders.
+        :type account: str
+        :return: List of all instruments positions status associated with the user returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return self.api_request(urls.account_position.format(a=account))
+
+    def get_detailed_position(self, account):
+        """Make a request to the API and get the detailed account asset positions by asset type.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param account: Account associated with the orders.
+        :type account: str
+        :return: List of all instruments positions status associated with the user returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return self.api_request(urls.detailed_position.format(a=account))
+
+    def get_account_report(self, account):
+        """Make a request to the API and get the summary of associated account.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param account: Account associated with the orders.
+        :type account: str
+        :return: Summary status associated with the user returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return self.api_request(urls.account_report.format(a=account))
+
     def send_order(self, ticker, size, order_type, side,
                    account, price, time_in_force, market,
                    cancel_previous, iceberg, expire_date,

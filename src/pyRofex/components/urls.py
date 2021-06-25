@@ -20,6 +20,9 @@ new_order = "rest/order/newSingleOrder?marketId={market}&symbol={ticker}" \
             "&account={account}&cancelPrevious={cancel_previous}"
 cancel_order = "rest/order/cancelById?clOrdId={id}&proprietary={p}"
 all_orders_status = "rest/order/all?accountId={a}"
+account_position = "rest/risk/position/getPositions/{a}"
+detailed_position = "rest/risk/detailedPosition/{a}"
+account_report = "rest/risk/accountReport/{a}"
 
 # Optional Parameters
 iceberg = "&iceberg=true&displayQty={display_quantity}"

@@ -30,6 +30,9 @@ from .service import send_order
 from .service import cancel_order
 from .service import get_order_status
 from .service import get_all_orders_status
+from .service import get_account_position
+from .service import get_detailed_position
+from .service import get_account_report
 
 from .components.enums import Environment
 from .components.enums import MarketDataEntry
