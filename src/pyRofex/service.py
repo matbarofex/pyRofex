@@ -389,6 +389,86 @@ def get_trade_history(ticker, start_date, end_date, market=Market.ROFEX, environ
     return client.get_trade_history(ticker, start_date, end_date, market)
 
 
+def get_account_position(account=None, environment=None):
+    """Make a request to the API and get the status of the account positions.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param account: Account associated with the orders. Default None: default account is used.
+    :type account: str
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Positions status associated with the user returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+    _validate_account(account, environment)
+
+    # Checks the account and sets the default one if None is received.
+    if account is None:
+        account = globals.environment_config[environment]["account"]
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["rest_client"]
+    return client.get_account_position(account)
+
+
+def get_detailed_position(account=None, environment=None):
+    """Make a request to the API and get the status of detailed account asset positions by asset type.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param account: Account associated with the orders. Default None: default account is used.
+    :type account: str
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Detailed position status associated with the user returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+    _validate_account(account, environment)
+
+    # Checks the account and sets the default one if None is received.
+    if account is None:
+        account = globals.environment_config[environment]["account"]
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["rest_client"]
+    return client.get_detailed_position(account)
+
+
+def get_account_report(account=None, environment=None):
+    """Make a request to the API and get the summary of associated account.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param account: Account associated with the orders. Default None: default account is used.
+    :type account: str
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Summary status associated with the user returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+    _validate_account(account, environment)
+
+    # Checks the account and sets the default one if None is received.
+    if account is None:
+        account = globals.environment_config[environment]["account"]
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["rest_client"]
+    return client.get_account_report(account)
+
 # ######################################################
 # ##              Websocket functions                 ##
 # ######################################################
