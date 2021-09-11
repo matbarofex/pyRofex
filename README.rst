@@ -76,6 +76,10 @@ Functions
 * **get_order_status**\ : gets the status of the specified order.
 * **get_all_orders_status**\ : gets the status of all the orders associated with an account.
 
+* **get_account_position**\ : gets the status of the account positions.
+* **get_detailed_position**\ : gets the status of detailed account asset positions by asset type.
+* **get_account_report**\ : gets the summary of associated account.
+
 ..
 
   *All functions return a dict of the JSON response.*
