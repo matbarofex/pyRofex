@@ -39,7 +39,7 @@ def error_handler(message):
 
 
 def exception_handler(e):
-    print("Exception Occurred: {0}".format(e.message))
+    print("Exception Occurred: {0}".format(e.msg))
 
 
 # 3-Initialize Websocket Connection with the handlers

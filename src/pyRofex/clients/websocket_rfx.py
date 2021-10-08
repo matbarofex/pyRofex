@@ -115,6 +115,11 @@ class WebSocketClient():
         Create an instance WebSocketApp using the environment
         It will create a new thread that is going to be listening new incoming messages.
         """
+
+        if self.ws_thread is not None and self.ws_thread.is_alive():
+            # To avoid connecting again if the ws thread is alive
+            return
+
         headers = {'X-Auth-Token:{token}'.format(token=self.environment["token"])}
         self.ws_connection = websocket.WebSocketApp(self.environment["ws"],
                                                     on_message=self.on_message,
@@ -130,11 +135,13 @@ class WebSocketClient():
 
         # Wait 5 sec to establish the connection
         conn_timeout = 5
-        time.sleep(1)
-        while not self.ws_connection.sock.connected and conn_timeout:
+        while self.ws_thread.is_alive() \
+                and (self.ws_connection.sock is None or not self.ws_connection.sock.connected) \
+                and conn_timeout > 0:
             time.sleep(1)
             conn_timeout -= 1
-        if not self.ws_connection.sock.connected:
+
+        if self.ws_connection.sock is None or not self.ws_connection.sock.connected:
             self.on_exception(ApiException("Connection could not be established."))
 
     def on_message(self, message):
