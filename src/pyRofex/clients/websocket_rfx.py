@@ -289,6 +289,6 @@ class WebSocketClient():
         :rtype: dict of JSON response.
         """
 
-        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value)
+        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value.upper())
 
         return self.ws_connection.send(message)
