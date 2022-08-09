@@ -285,8 +285,6 @@ class WebSocketClient():
         :type account: str
         :param price: Order price.
         :type price: float
-        :return: Client Order ID and Proprietary of the order returned by the API.
-        :rtype: dict of JSON response.
         """
 
         message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value.upper())
