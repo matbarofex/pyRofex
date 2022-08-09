@@ -13,3 +13,5 @@ ORDER_SUBSCRIPTION = '{{"type":"os","account":{{"id":"{a}"}},"snapshotOnlyActive
 INSTRUMENT = '{{"symbol":"{ticker}","marketId":"{market}"}}'
 # Template to insert a Double Quote
 DOUBLE_QUOTES = '"{item}"'
+# Template for sending an Order via WebSocket
+SEND_ORDER = '{{"type":"no","product":{"marketId":"ROFX","symbol":"{ticker}"},"price":"{price}","quantity":"{size}","side":"{side}","account":"{account}"}}'

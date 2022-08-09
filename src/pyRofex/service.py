@@ -745,6 +745,23 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
+def send_order_via_websocket(ticker, size, side, account, price, environment = None):
+    """Send orders via websocket
+
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+    
+    # Gets the client for the environment
+    client = globals.environment_config[environment]["ws_client"]
+
+    # Close Websocket connection with the API
+    client.send_order(ticker, size, side, account, price)
+
 
 # ######################################################
 # ##              Validations functions               ##

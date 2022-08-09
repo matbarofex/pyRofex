@@ -268,3 +268,27 @@ class WebSocketClient():
         :rtype: boolean.
         """
         return self.connected
+
+    def send_order(self, ticker, size, side,
+                   account, price):
+        """Send a new order to the Market.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param ticker: Instrument symbol to send in the request. Example: DODic19.
+        :type ticker: str
+        :param size: Order size.
+        :type size: int
+        :param side: Order side. Example: Side.BUY.
+        :type side: Side (Enum).
+        :param account: Account to used.
+        :type account: str
+        :param price: Order price.
+        :type price: float
+        :return: Client Order ID and Proprietary of the order returned by the API.
+        :rtype: dict of JSON response.
+        """
+
+        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account)
+
+        return self.ws_connection.send(message)
