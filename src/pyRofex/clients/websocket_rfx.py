@@ -284,7 +284,7 @@ class WebSocketClient():
         :return: Client Order ID of cancellation request returned by the API.
         :rtype: dict of JSON response.
         """
-        return elf.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
+        return self.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
 
     def send_order(self, ticker, size, side,
                    account, price, time_in_force, market,
