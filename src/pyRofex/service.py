@@ -745,7 +745,9 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
-def send_order_via_websocket(ticker, size, side, price, display_quantity = 0, iceberg = False, id = None, all_or_none = False, environment = None, account = None):
+def send_order_via_websocket(ticker, size, side, price, time_in_force = TimeInForce.DAY, 
+                             display_quantity = 0, iceberg = False, id = None, all_or_none = False, 
+                             environment = None, account = None, expire_date = None):
     """Send orders via websocket
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19.
@@ -782,7 +784,7 @@ def send_order_via_websocket(ticker, size, side, price, display_quantity = 0, ic
         account = globals.environment_config[environment]["account"]
 
     # Close Websocket connection with the API
-    client.send_order(ticker, size, side, account, price, all_or_none, id, iceberg, display_quantity)
+    client.send_order(ticker, size, side, account, price, all_or_none, id, iceberg, display_quantity, time_in_force, expire_date)
 
 
 # ######################################################
