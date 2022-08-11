@@ -12,7 +12,6 @@ import simplejson
 
 from ..components import globals
 from ..components import messages
-from ..components.enums import OrderType
 from ..components.enums import TimeInForce
 from ..components.exceptions import ApiException
 
@@ -320,11 +319,13 @@ class WebSocketClient():
         if id is not None:
             new_order = new_order + messages.ID
 
+        new_order = new_order + '}}'
+
         return self.ws_connection.send(new_order.format(market=market.value,
                                                      ticker=ticker,
                                                      size=size,
-                                                     side=side.value,
-                                                     time_force=time_in_force.value,
+                                                     side=side.value.upper(),
+                                                     time_force=time_in_force.value.upper(),
                                                      account=account,
                                                      price=price,
                                                      cancel_previous=cancel_previous,
