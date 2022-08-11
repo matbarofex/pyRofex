@@ -745,31 +745,47 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
-def send_order_via_websocket(ticker, size, side, price, time_in_force = TimeInForce.DAY, 
-                             display_quantity = 0, iceberg = False, id = None, all_or_none = False, 
-                             environment = None, account = None, expire_date = None):
+def send_order_via_websocket(ticker, size, order_type, side,
+               market=Market.ROFEX,
+               time_in_force=TimeInForce.DAY,
+               account=None,
+               price=None,
+               cancel_previous=False,
+               iceberg=False,
+               expire_date=None,
+               display_quantity=None,
+               environment=None):
     """Send orders via websocket
 
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
     :param ticker: Instrument symbol to send in the request. Example: DODic19.
-    :type ticker: str.
+    :type ticker: str
     :param size: Order size.
-    :type size: int.
+    :type size: int
+    :param order_type: Order type. Example: OrderType.LIMIT.
+    :type order_type: OrderType (Enum).
     :param side: Order side. Example: Side.BUY.
     :type side: Side (Enum).
-    :param price: Order price.
-    :type price: float.
-    :param display_quantity: Only valid if iceberg order is True. Default 0. 
-    :type display_quantity: int.
-    :param iceberg: iceberg order. Default False.
-    :type iceberg: bool.
-    :param id: Order with identifier. Default None.
-    :type id: str.
-    :param all_or_none: wholesale contract. Default False.
-    :type all_or_none: bool.
+    :param market: Market ID related to the instrument. Default Market.ROFEX.
+    :type market: Market (Enum).
+    :param time_in_force: Order modifier that defines the active time of the order. Default TimeInForce.Day.
+    :type time_in_force: TimeInForce (Enum).
+    :param account: Account to used. Default None: default account is used.
+    :type account: str
+    :param price: Order price. Default None: when no price is required.
+    :type price: float
+    :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
+    False: send the order without cancelling previous ones. Useful for replacing old orders. Default: False.
+    :type cancel_previous: boolean.
+    :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+    :type iceberg: boolean.
+    :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+    :type expire_date: str (Enum).
+    :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+    :type display_quantity: int
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
-    :param account: Account used. Default None: the default account is used.
-    :type account: str.
     """
 
     # Validations
@@ -783,8 +799,10 @@ def send_order_via_websocket(ticker, size, side, price, time_in_force = TimeInFo
     if account is None:
         account = globals.environment_config[environment]["account"]
 
-    # Close Websocket connection with the API
-    client.send_order(ticker, size, side, account, price, all_or_none, id, iceberg, display_quantity, time_in_force, expire_date)
+    # Make the order
+    client.send_order(ticker, size, order_type, side, account,
+                             price, time_in_force, market, cancel_previous,
+                             iceberg, expire_date, display_quantity)
 
 
 # ######################################################

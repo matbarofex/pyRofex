@@ -12,6 +12,8 @@ import simplejson
 
 from ..components import globals
 from ..components import messages
+from ..components.enums import OrderType
+from ..components.enums import TimeInForce
 from ..components.exceptions import ApiException
 
 
@@ -269,8 +271,10 @@ class WebSocketClient():
         """
         return self.connected
 
-    def send_order(self, ticker, size, side, account, price, all_or_none, 
-                   id, iceberg, display_quantity, time_in_force, expire_date):
+    def send_order(self, ticker, size, order_type, side,
+                   account, price, time_in_force, market,
+                   cancel_previous, iceberg, expire_date,
+                   display_quantity):
         """Send a new order to the Market.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -279,24 +283,50 @@ class WebSocketClient():
         :type ticker: str
         :param size: Order size.
         :type size: int
+        :param order_type: Order type. Example: OrderType.LIMIT.
+        :type order_type: OrderType (Enum).
         :param side: Order side. Example: Side.BUY.
         :type side: Side (Enum).
         :param account: Account to used.
         :type account: str
         :param price: Order price.
         :type price: float
-        :param all_or_none: wholesale contract.
-        :type all_or_none: bool.
-        :param id: Order with identifier.
-        :type id: str.
-        :param iceberg: iceberg order. Default False.
-        :type iceberg: bool.
-        :param display_quantity: Only valid if iceberg order is True.
-        :type display_quantity: int.
+        :param time_in_force: Order modifier that defines the active time of the order.
+        :type time_in_force: TimeInForce (Enum).
+        :param market: Market ID related to the instrument.
+        :type market: Market (Enum).
+        :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
+        False: send the order without cancelling previous ones. Useful for replacing old orders.
+        :type cancel_previous: boolean.
+        :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+        :type iceberg: boolean.
+        :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+        :type expire_date: str (Enum).
+        :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+        :type display_quantity: int
         """
 
-        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value.upper(), \
-            all_or_none = all_or_none, id = id, iceberg = iceberg, display_quantity = display_quantity, time_in_force = time_in_force.value, \
-            expire_date = expire_date)
+        new_order = messages.SEND_ORDER
 
-        return self.ws_connection.send(message)
+        # Adds Optional Parameters
+        if order_type is OrderType.LIMIT:
+            new_order = new_order + messages.LIMIT_ORDER
+
+        if time_in_force is TimeInForce.GoodTillDate:
+            new_order = new_order + messages.GOOD_TILL_DATE
+
+        if iceberg:
+            new_order = new_order + messages.ICEBERG
+
+        return self.ws_connection.send(new_order.format(market=market.value,
+                                                     ticker=ticker,
+                                                     size=size,
+                                                     type=order_type.value,
+                                                     side=side.value,
+                                                     time_force=time_in_force.value,
+                                                     account=account,
+                                                     price=price,
+                                                     cancel_previous=cancel_previous,
+                                                     iceberg=iceberg,
+                                                     expire_date=expire_date,
+                                                     display_quantity=display_quantity))
