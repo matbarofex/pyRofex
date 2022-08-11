@@ -745,7 +745,8 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
-def send_order_via_websocket(ticker, size, order_type, side,
+def send_order_via_websocket(ticker, size, side, 
+               all_or_none = False,
                market=Market.ROFEX,
                time_in_force=TimeInForce.DAY,
                account=None,
@@ -754,7 +755,8 @@ def send_order_via_websocket(ticker, size, order_type, side,
                iceberg=False,
                expire_date=None,
                display_quantity=None,
-               environment=None):
+               environment=None,
+               id = None):
     """Send orders via websocket
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -766,6 +768,8 @@ def send_order_via_websocket(ticker, size, order_type, side,
     :param order_type: Order type. Example: OrderType.LIMIT.
     :type order_type: OrderType (Enum).
     :param side: Order side. Example: Side.BUY.
+    :type all_or_none: Fill all the order or none. Default False
+    :param all_or_none: bool.
     :type side: Side (Enum).
     :param market: Market ID related to the instrument. Default Market.ROFEX.
     :type market: Market (Enum).
@@ -786,6 +790,8 @@ def send_order_via_websocket(ticker, size, order_type, side,
     :type display_quantity: int
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
+    :type id: Id for orders. Default None
+    :param id: str.
     """
 
     # Validations
@@ -800,9 +806,10 @@ def send_order_via_websocket(ticker, size, order_type, side,
         account = globals.environment_config[environment]["account"]
 
     # Make the order
-    client.send_order(ticker, size, order_type, side, account,
+    client.send_order(ticker, size, side, account,
                              price, time_in_force, market, cancel_previous,
-                             iceberg, expire_date, display_quantity)
+                             iceberg, expire_date, display_quantity,
+                             all_or_none, id)
 
 
 # ######################################################

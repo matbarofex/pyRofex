@@ -271,10 +271,10 @@ class WebSocketClient():
         """
         return self.connected
 
-    def send_order(self, ticker, size, order_type, side,
+    def send_order(self, ticker, size, side,
                    account, price, time_in_force, market,
                    cancel_previous, iceberg, expire_date,
-                   display_quantity):
+                   display_quantity, all_or_none, id):
         """Send a new order to the Market.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -283,8 +283,6 @@ class WebSocketClient():
         :type ticker: str
         :param size: Order size.
         :type size: int
-        :param order_type: Order type. Example: OrderType.LIMIT.
-        :type order_type: OrderType (Enum).
         :param side: Order side. Example: Side.BUY.
         :type side: Side (Enum).
         :param account: Account to used.
@@ -304,24 +302,27 @@ class WebSocketClient():
         :type expire_date: str (Enum).
         :param display_quantity: Indicates the amount to be disclosed for GTD orders.
         :type display_quantity: int
+        :type all_or_none: Fill all the order or none. Default False
+        :param all_or_none: bool.
+        :type id: Id for orders. Default None
+        :param id: str.
         """
 
         new_order = messages.SEND_ORDER
 
         # Adds Optional Parameters
-        if order_type is OrderType.LIMIT:
-            new_order = new_order + messages.LIMIT_ORDER
-
         if time_in_force is TimeInForce.GoodTillDate:
             new_order = new_order + messages.GOOD_TILL_DATE
 
         if iceberg:
             new_order = new_order + messages.ICEBERG
+        
+        if id is not None:
+            new_order = new_order + messages.ID
 
         return self.ws_connection.send(new_order.format(market=market.value,
                                                      ticker=ticker,
                                                      size=size,
-                                                     type=order_type.value,
                                                      side=side.value,
                                                      time_force=time_in_force.value,
                                                      account=account,
@@ -329,4 +330,6 @@ class WebSocketClient():
                                                      cancel_previous=cancel_previous,
                                                      iceberg=iceberg,
                                                      expire_date=expire_date,
-                                                     display_quantity=display_quantity))
+                                                     display_quantity=display_quantity,
+                                                     all_or_none = all_or_none,
+                                                     id = id))
