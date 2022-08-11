@@ -821,6 +821,8 @@ def send_order_via_websocket(ticker, size, side,
     :type environment: Environment (Enum).
     :type id: Id for orders. Default None
     :param id: str.
+    :return: Client Order ID and Proprietary of the order returned by the API.
+    :rtype: dict of JSON response.
     """
 
     # Validations
@@ -835,7 +837,7 @@ def send_order_via_websocket(ticker, size, side,
         account = globals.environment_config[environment]["account"]
 
     # Make the order
-    client.send_order(ticker, size, side, account,
+    return client.send_order(ticker, size, side, account,
                              price, time_in_force, market, cancel_previous,
                              iceberg, expire_date, display_quantity,
                              all_or_none, id)
