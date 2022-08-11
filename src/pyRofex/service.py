@@ -745,7 +745,7 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
-def send_order_via_websocket(ticker, size, side, price, environment = None, account = None):
+def send_order_via_websocket(ticker, size, side, price, all_or_none, environment = None, account = None):
     """Send orders via websocket
 
     :param environment: Environment used. Default None: the default environment is used.
@@ -764,7 +764,7 @@ def send_order_via_websocket(ticker, size, side, price, environment = None, acco
         account = globals.environment_config[environment]["account"]
 
     # Close Websocket connection with the API
-    client.send_order(ticker, size, side, account, price)
+    client.send_order(ticker, size, side, account, price, all_or_none)
 
 
 # ######################################################
