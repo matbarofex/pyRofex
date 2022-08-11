@@ -270,7 +270,7 @@ class WebSocketClient():
         return self.connected
 
     def send_order(self, ticker, size, side,
-                   account, price, all_or_none):
+                   account, price, all_or_none, id):
         """Send a new order to the Market.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -287,8 +287,11 @@ class WebSocketClient():
         :type price: float
         :param all_or_none: wholesale contract.
         :type all_or_none: bool.
+        :param id: Order with identifier.
+        :type id: str.
         """
 
-        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value.upper(), all_or_none = all_or_none)
+        message = messages.SEND_ORDER.format(ticker=ticker, price=price, size=size, account=account, side=side.value.upper(), \
+            all_or_none = all_or_none, id = id)
 
         return self.ws_connection.send(message)
