@@ -15,4 +15,5 @@ INSTRUMENT = '{{"symbol":"{ticker}","marketId":"{market}"}}'
 DOUBLE_QUOTES = '"{item}"'
 # Template for sending an Order via WebSocket
 SEND_ORDER = '{{"type":"no","product":{{"marketId":"ROFX","symbol":"{ticker}"}},"price":"{price}","quantity":"{size}",\
-                "side":"{side}","account":"{account}", "allOrNone":"{all_or_none}", "wsClOrdId":"{id}", "iceberg":"{iceberg}"}}'
+                "side":"{side}","account":"{account}", "allOrNone":"{all_or_none}", "wsClOrdId":"{id}",\
+                "iceberg":"{iceberg}", "displayQuantity":"{display_quantity}"}}'
