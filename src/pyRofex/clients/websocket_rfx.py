@@ -285,7 +285,7 @@ class WebSocketClient():
         :type account: str
         :param price: Order price.
         :type price: float
-        :param all_or_none: Fill all or cancel.
+        :param all_or_none: wholesale contract.
         :type all_or_none: bool.
         """
 
