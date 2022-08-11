@@ -270,6 +270,22 @@ class WebSocketClient():
         """
         return self.connected
 
+    def cancel_order(self, client_order_id, proprietary):
+        """Make a request to the API and cancel the order specified.
+
+        The market will respond with a client order id, then you should verify the status of the request with this id.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param client_order_id: Client Order ID of the order.
+        :type client_order_id: str
+        :param proprietary: Proprietary of the order.
+        :type proprietary: str
+        :return: Client Order ID of cancellation request returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return elf.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
+
     def send_order(self, ticker, size, side,
                    account, price, time_in_force, market,
                    cancel_previous, iceberg, expire_date,

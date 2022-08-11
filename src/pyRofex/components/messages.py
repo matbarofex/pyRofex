@@ -17,6 +17,8 @@ DOUBLE_QUOTES = '"{item}"'
 SEND_ORDER = '{{"type":"no","product":{{"marketId":"{market}","symbol":"{ticker}"}}, "price":"{price}", "quantity":"{size}",\
                 "side":"{side}","account":"{account}", "allOrNone":"{all_or_none}", "timeInForce":"{time_force}"'
 
+CANCEL_ORDER = '{{"type":"co, "clientId":"{id}", "proprietary":"{p}"}}'
+
 # OPTIONAL PARAMETERS
 ICEBERG = ',"iceberg":"{iceberg}", "displayQuantity":"{display_quantity}"'
 GOOD_TILL_DATE = ',"expireDate":"{expire_date}"'

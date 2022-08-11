@@ -20,6 +20,7 @@ from .service import add_websocket_error_handler
 from .service import remove_websocket_error_handler
 from .service import set_websocket_exception_handler
 from .service import send_order_via_websocket
+from .service import cancel_order_via_websocket
 
 from .service import get_segments
 from .service import get_all_instruments

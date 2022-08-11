@@ -745,6 +745,37 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
+def cancel_order_via_websocket(client_order_id, proprietary=None, environment=None):
+    """Make a request via WebSocket and cancel the order specified.
+
+    The market will respond with a client order id, then you should verify the status of the request with this id.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param client_order_id: Client Order ID of the order.
+    :type client_order_id: str
+    :param proprietary: Proprietary of the order. Default None: environment default proprietary is used.
+    :type proprietary: str
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Client Order ID of cancellation request returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Checks the proprietary and sets the default one if None is received.
+    if proprietary is None:
+        proprietary = globals.environment_config[environment]["proprietary"]
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["rest_client"]
+    return client.cancel_order(client_order_id,
+                               proprietary)
+
+
 def send_order_via_websocket(ticker, size, side, 
                all_or_none = False,
                market=Market.ROFEX,
