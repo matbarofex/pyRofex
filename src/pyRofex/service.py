@@ -745,7 +745,7 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
-def send_order_via_websocket(ticker, size, side, price, display_quantity, iceberg = False, id = None, all_or_none = False, environment = None, account = None):
+def send_order_via_websocket(ticker, size, side, price, display_quantity = 0, iceberg = False, id = None, all_or_none = False, environment = None, account = None):
     """Send orders via websocket
 
     :param ticker: Instrument symbol to send in the request. Example: DODic19.
@@ -756,7 +756,7 @@ def send_order_via_websocket(ticker, size, side, price, display_quantity, iceber
     :type side: Side (Enum).
     :param price: Order price.
     :type price: float.
-    :param display_quantity: Only valid if iceberg order is True.
+    :param display_quantity: Only valid if iceberg order is True. Default 0. 
     :type display_quantity: int.
     :param iceberg: iceberg order. Default False.
     :type iceberg: bool.
