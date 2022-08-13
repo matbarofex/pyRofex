@@ -41,4 +41,4 @@ from .components.enums import OrderType
 from .components.enums import Side
 from .components.enums import TimeInForce
 
-__version__ = "0.4.0"
+__version__ = "0.4.2rc1"

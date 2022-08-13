@@ -4,6 +4,9 @@
 
     Defines library global variables
 """
+
+import ssl
+
 from .enums import Environment
 
 # Default environment used if None environment is specified.
@@ -24,7 +27,8 @@ environment_config = {
         "account": None,
         "initialized": False,
         "proprietary": "PBCP",
-        "heartbeat": 30
+        "heartbeat": 30,
+        "ssl_opt": None
     },
     Environment.LIVE: {
         "url": "https://api.primary.com.ar/",
@@ -38,6 +42,7 @@ environment_config = {
         "account": None,
         "initialized": False,
         "proprietary": "api",
-        "heartbeat": 30
+        "heartbeat": 30,
+        "ssl_opt": None
     }
 }

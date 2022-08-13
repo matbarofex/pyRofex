@@ -9,3 +9,4 @@ bin/
 build/
 dist/
 src/pyRofex.egg-info/
+*.txt

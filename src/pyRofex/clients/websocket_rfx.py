@@ -6,6 +6,7 @@
 """
 import threading
 import time
+import ssl
 
 import websocket
 import simplejson
@@ -130,7 +131,8 @@ class WebSocketClient():
 
         # Create a thread and target it to the run_forever function, then start it.
         self.ws_thread = threading.Thread(target=self.ws_connection.run_forever,
-                                          kwargs={"ping_interval": self.environment["heartbeat"]})
+                                          kwargs={"ping_interval": self.environment["heartbeat"],
+                                                  "sslopt": self.environment["ssl_opt"]})
         self.ws_thread.start()
 
         # Wait 5 sec to establish the connection

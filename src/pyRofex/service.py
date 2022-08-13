@@ -21,7 +21,7 @@ from .components.enums import Market
 # ######################################################
 
 
-def initialize(user, password, account, environment, proxies=None):
+def initialize(user, password, account, environment, proxies=None, ssl_opt=None):
     """ Initialize the specified environment.
 
      Set the default user, password and account for the environment.
@@ -36,9 +36,11 @@ def initialize(user, password, account, environment, proxies=None):
     :type environment: Environment (Enum)
     :param proxies: (optional) Dictionary mapping protocol to the URL of the proxy.
     :type proxies: dict
+    :param ssl_opt: (optional) Dictionary with ssl options for websocket connection.
+    :type ssl_opt: dict
     """
     _validate_environment(environment)
-    _set_environment_parameters(user, password, account, environment, proxies)
+    _set_environment_parameters(user, password, account, environment, proxies, ssl_opt)
     globals.environment_config[environment]["rest_client"] = RestClient(environment)
     globals.environment_config[environment]["ws_client"] = WebSocketClient(environment)
     set_default_environment(environment)
@@ -76,7 +78,7 @@ def _set_environment_parameter(parameter, value, environment):
     globals.environment_config[environment][parameter] = value
 
 
-def _set_environment_parameters(user, password, account, environment, proxies):
+def _set_environment_parameters(user, password, account, environment, proxies, ssl_opt):
     """Configure the environment parameters into global configuration.
 
     Set the user, password and account into globals configuration.
@@ -88,11 +90,14 @@ def _set_environment_parameters(user, password, account, environment, proxies):
     :param environment: the environment that is going to be configured.
     :param proxies: (optional) Dictionary mapping protocol to the URL of the proxy.
     :type proxies: dict
+    :param ssl_opt: (optional) Dictionary with ssl options for websocket connection.
+    :type ssl_opt: dict
     """
     globals.environment_config[environment]["user"] = user
     globals.environment_config[environment]["password"] = password
     globals.environment_config[environment]["account"] = account
     globals.environment_config[environment]["proxies"] = proxies
+    globals.environment_config[environment]["ssl_opt"] = ssl_opt
 
 
 # ######################################################
