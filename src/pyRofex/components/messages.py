@@ -14,12 +14,14 @@ INSTRUMENT = '{{"symbol":"{ticker}","marketId":"{market}"}}'
 # Template to insert a Double Quote
 DOUBLE_QUOTES = '"{item}"'
 # Template for sending an Order via WebSocket
-SEND_ORDER = '{{"type":"no","product":{{"marketId":"{market}","symbol":"{ticker}"}}, "price":"{price}", "quantity":"{size}",\
-                "side":"{side}","account":"{account}", "allOrNone":"{all_or_none}", "timeInForce":"{time_force}"'
+SEND_ORDER = '{{"type":"no","product":{{"marketId":"{market}","symbol":"{ticker}"}},"quantity":"{size}",\
+                "side":"{side}","account":"{account}","allOrNone":"{all_or_none}","timeInForce":"{time_force}",{optional_params}}}'
 
-CANCEL_ORDER = '{{"type":"co, "clientId":"{id}", "proprietary":"{p}"}}'
+CANCEL_ORDER = '{{"type":"co", "clientId":"{id}", "proprietary":"{p}"}}'
 
 # OPTIONAL PARAMETERS
 ICEBERG = ',"iceberg":"{iceberg}", "displayQuantity":"{display_quantity}"'
 GOOD_TILL_DATE = ',"expireDate":"{expire_date}"'
-ID = ',"wsClOrdId":"{id}"'
+WS_CLIENT_ID = ',"wsClOrdId":"{id}"'
+PRICE = ',"price":"{price}"'
+LIMIT = ',"ordType":{order_type}'

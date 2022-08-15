@@ -13,6 +13,7 @@ import simplejson
 from ..components import globals
 from ..components import messages
 from ..components.enums import TimeInForce
+from ..components.enums import OrderType
 from ..components.exceptions import ApiException
 
 
@@ -286,10 +287,10 @@ class WebSocketClient():
         """
         return self.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
 
-    def send_order(self, ticker, size, side,
+    def send_order(self, ticker, size, side, order_type,
                    account, price, time_in_force, market,
                    cancel_previous, iceberg, expire_date,
-                   display_quantity, all_or_none, id):
+                   display_quantity, all_or_none, wsClOrdID):
         """Send a new order to the Market.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -300,6 +301,8 @@ class WebSocketClient():
         :type size: int
         :param side: Order side. Example: Side.BUY.
         :type side: Side (Enum).
+        :param order_type: Order type. Example: OrderType.LIMIT.
+        :type order_type: OrderType (Enum).
         :param account: Account to used.
         :type account: str
         :param price: Order price.
@@ -319,34 +322,41 @@ class WebSocketClient():
         :type display_quantity: int
         :type all_or_none: Fill all the order or none. Default False
         :param all_or_none: bool.
-        :type id: Id for orders. Default None
-        :param id: str.
+        :type wsClOrdID: Id for orders. Default None
+        :param wsClOrdID: str.
         """
 
-        new_order = messages.SEND_ORDER
+        opt_params = ""
 
         # Adds Optional Parameters
         if time_in_force is TimeInForce.GoodTillDate:
-            new_order = new_order + messages.GOOD_TILL_DATE
+            opt_params = opt_params + messages.GOOD_TILL_DATE
 
         if iceberg:
-            new_order = new_order + messages.ICEBERG
+            opt_params = opt_params + messages.ICEBERG
         
-        if id is not None:
-            new_order = new_order + messages.ID
+        if wsClOrdID is not None:
+            opt_params = opt_params + messages.WS_CLIENT_ID
 
-        new_order = new_order + '}}'
+        if price is not None:
+            opt_params = opt_params + messages.PRICE
+        
+        if order_type is OrderType.LIMIT:
+            opt_params = opt_params + messages.LIMIT
 
-        return self.ws_connection.send(new_order.format(market=market.value,
-                                                     ticker=ticker,
-                                                     size=size,
-                                                     side=side.value.upper(),
-                                                     time_force=time_in_force.value.upper(),
-                                                     account=account,
-                                                     price=price,
-                                                     cancel_previous=cancel_previous,
-                                                     iceberg=iceberg,
-                                                     expire_date=expire_date,
-                                                     display_quantity=display_quantity,
-                                                     all_or_none = all_or_none,
-                                                     id = id))
+        opt_params = opt_params.format(price=price,
+                                    iceberg=iceberg,
+                                    expire_date=expire_date,
+                                    display_quantity=display_quantity,
+                                    id=wsClOrdID,
+                                    order_type=order_type)
+
+        return self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
+                                                                ticker=ticker,
+                                                                size=size,
+                                                                side=side.value.upper(),
+                                                                time_force=time_in_force.value.upper(),
+                                                                account=account,
+                                                                cancel_previous=cancel_previous,
+                                                                all_or_none=all_or_none,
+                                                                optional_params=opt_params))
