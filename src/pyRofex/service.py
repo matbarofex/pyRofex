@@ -787,7 +787,7 @@ def send_order_via_websocket(ticker, size, side, order_type,
                expire_date=None,
                display_quantity=None,
                environment=None,
-               id=None):
+               wsClOrdID=None):
     """Send orders via websocket
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -821,8 +821,8 @@ def send_order_via_websocket(ticker, size, side, order_type,
     :type display_quantity: int
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
-    :type id: Id for orders. Default None
-    :param id: str.
+    :type wsClOrdID: Id for orders. Default None
+    :param wsClOrdID: str.
     :return: Client Order ID and Proprietary of the order returned by the API.
     :rtype: dict of JSON response.
     """
@@ -842,7 +842,7 @@ def send_order_via_websocket(ticker, size, side, order_type,
     return client.send_order(ticker, size, side, order_type, account,
                              price, time_in_force, market, cancel_previous,
                              iceberg, expire_date, display_quantity,
-                             all_or_none, id)
+                             all_or_none, wsClOrdID)
 
 
 # ######################################################
