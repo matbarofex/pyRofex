@@ -22,5 +22,5 @@ CANCEL_ORDER = '{{"type":"co", "clientId":"{id}", "proprietary":"{p}"}}'
 # OPTIONAL PARAMETERS
 ICEBERG = ',"iceberg":"{iceberg}", "displayQuantity":"{display_quantity}"'
 GOOD_TILL_DATE = ',"expireDate":"{expire_date}"'
-WS_CLIENT_ID = ',"wsClOrdId":"{id}"'
+WS_CLIENT_ID = ',"wsClOrdId":"{wsClOrdID}"'
 PRICE = ',"price":"{price}"'

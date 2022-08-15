@@ -345,7 +345,7 @@ class WebSocketClient():
                                     iceberg=iceberg,
                                     expire_date=expire_date,
                                     display_quantity=display_quantity,
-                                    id=wsClOrdID)
+                                    wsClOrdID=wsClOrdID)
 
         return self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
                                                                 ticker=ticker,
