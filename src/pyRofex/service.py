@@ -776,7 +776,7 @@ def cancel_order_via_websocket(client_order_id, proprietary=None, environment=No
                                proprietary)
 
 
-def send_order_via_websocket(ticker, size, side, 
+def send_order_via_websocket(ticker, size, side, order_type,
                all_or_none = False,
                market=Market.ROFEX,
                time_in_force=TimeInForce.DAY,
@@ -787,7 +787,7 @@ def send_order_via_websocket(ticker, size, side,
                expire_date=None,
                display_quantity=None,
                environment=None,
-               id = None):
+               id=None):
     """Send orders via websocket
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
@@ -837,7 +837,7 @@ def send_order_via_websocket(ticker, size, side,
         account = globals.environment_config[environment]["account"]
 
     # Make the order
-    return client.send_order(ticker, size, side, account,
+    return client.send_order(ticker, size, side, order_type, account,
                              price, time_in_force, market, cancel_previous,
                              iceberg, expire_date, display_quantity,
                              all_or_none, id)
