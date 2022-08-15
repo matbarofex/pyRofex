@@ -797,6 +797,8 @@ def send_order_via_websocket(ticker, size, side, order_type,
     :param size: Order size.
     :type size: int
     :param side: Order side. Example: Side.BUY.
+    :param order_type: Order type. Example: OrderType.LIMIT.
+    :type order_type: OrderType (Enum).
     :type all_or_none: Fill all the order or none. Default False
     :param all_or_none: bool.
     :type side: Side (Enum).

@@ -15,7 +15,7 @@ INSTRUMENT = '{{"symbol":"{ticker}","marketId":"{market}"}}'
 DOUBLE_QUOTES = '"{item}"'
 # Template for sending an Order via WebSocket
 SEND_ORDER = '{{"type":"no","product":{{"marketId":"{market}","symbol":"{ticker}"}},"quantity":"{size}",\
-                "side":"{side}","account":"{account}","allOrNone":"{all_or_none}","timeInForce":"{time_force}",{optional_params}}}'
+                "side":"{side}","account":"{account}","allOrNone":"{all_or_none}","timeInForce":"{time_force}"{optional_params}}}'
 
 CANCEL_ORDER = '{{"type":"co", "clientId":"{id}", "proprietary":"{p}"}}'
 
