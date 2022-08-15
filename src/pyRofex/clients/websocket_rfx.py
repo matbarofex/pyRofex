@@ -338,18 +338,14 @@ class WebSocketClient():
         if wsClOrdID is not None:
             opt_params = opt_params + messages.WS_CLIENT_ID
 
-        if price is not None:
+        if price is not None and order_type is OrderType.LIMIT:
             opt_params = opt_params + messages.PRICE
-        
-        if order_type is OrderType.LIMIT:
-            opt_params = opt_params + messages.LIMIT
 
         opt_params = opt_params.format(price=price,
                                     iceberg=iceberg,
                                     expire_date=expire_date,
                                     display_quantity=display_quantity,
-                                    id=wsClOrdID,
-                                    order_type=order_type)
+                                    id=wsClOrdID)
 
         return self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
                                                                 ticker=ticker,
@@ -359,4 +355,5 @@ class WebSocketClient():
                                                                 account=account,
                                                                 cancel_previous=cancel_previous,
                                                                 all_or_none=all_or_none,
+                                                                order_type=order_type.value,
                                                                 optional_params=opt_params))
