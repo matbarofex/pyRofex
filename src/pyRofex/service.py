@@ -771,7 +771,7 @@ def cancel_order_via_websocket(client_order_id, proprietary=None, environment=No
         proprietary = globals.environment_config[environment]["proprietary"]
 
     # Get the client for the environment and make the request
-    client = globals.environment_config[environment]["rest_client"]
+    client = globals.environment_config[environment]["ws_client"]
     return client.cancel_order(client_order_id,
                                proprietary)
 
