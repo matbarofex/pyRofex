@@ -85,3 +85,4 @@ class MarketDataEntry(Enum):
     INDEX_VALUE = "IV"
     TRADE_EFFECTIVE_VOLUME = "EV"
     NOMINAL_VOLUME = "NV"
+    ACP = "ACP"
