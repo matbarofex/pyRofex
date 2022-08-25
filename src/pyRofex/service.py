@@ -750,6 +750,105 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
+def cancel_order_via_websocket(client_order_id, proprietary=None, environment=None):
+    """Make a request via WebSocket and cancel the order specified.
+
+    The market will respond with a client order id, then you should verify the status of the request with this id.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param client_order_id: Client Order ID of the order.
+    :type client_order_id: str
+    :param proprietary: Proprietary of the order. Default None: environment default proprietary is used.
+    :type proprietary: str
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: Client Order ID of cancellation request returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Checks the proprietary and sets the default one if None is received.
+    if proprietary is None:
+        proprietary = globals.environment_config[environment]["proprietary"]
+
+    # Get the client for the environment and make the request
+    client = globals.environment_config[environment]["ws_client"]
+    return client.cancel_order(client_order_id,
+                               proprietary)
+
+
+def send_order_via_websocket(ticker, size, side, order_type,
+               all_or_none = False,
+               market=Market.ROFEX,
+               time_in_force=TimeInForce.DAY,
+               account=None,
+               price=None,
+               cancel_previous=False,
+               iceberg=False,
+               expire_date=None,
+               display_quantity=None,
+               environment=None,
+               wsClOrdID=None):
+    """Send orders via websocket
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param ticker: Instrument symbol to send in the request. Example: DODic19.
+    :type ticker: str
+    :param size: Order size.
+    :type size: int
+    :param side: Order side. Example: Side.BUY.
+    :param order_type: Order type. Example: OrderType.LIMIT.
+    :type order_type: OrderType (Enum).
+    :type all_or_none: Fill all the order or none. Default False
+    :param all_or_none: bool.
+    :type side: Side (Enum).
+    :param market: Market ID related to the instrument. Default Market.ROFEX.
+    :type market: Market (Enum).
+    :param time_in_force: Order modifier that defines the active time of the order. Default TimeInForce.Day.
+    :type time_in_force: TimeInForce (Enum).
+    :param account: Account to used. Default None: default account is used.
+    :type account: str
+    :param price: Order price. Default None: when no price is required.
+    :type price: float
+    :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
+    False: send the order without cancelling previous ones. Useful for replacing old orders. Default: False.
+    :type cancel_previous: boolean.
+    :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+    :type iceberg: boolean.
+    :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+    :type expire_date: str (Enum).
+    :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+    :type display_quantity: int
+    :param environment: Environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :type wsClOrdID: Id for orders. Default None
+    :param wsClOrdID: str.
+    :return: Client Order ID and Proprietary of the order returned by the API.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Gets the client for the environment
+    client = globals.environment_config[environment]["ws_client"]
+
+    # Checks the account and sets the default one if None is received.
+    if account is None:
+        account = globals.environment_config[environment]["account"]
+
+    # Make the order
+    return client.send_order(ticker, size, side, order_type, account,
+                             price, time_in_force, market, cancel_previous,
+                             iceberg, expire_date, display_quantity,
+                             all_or_none, wsClOrdID)
+
 
 # ######################################################
 # ##              Validations functions               ##

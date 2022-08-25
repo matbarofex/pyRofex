@@ -13,6 +13,8 @@ import simplejson
 
 from ..components import globals
 from ..components import messages
+from ..components.enums import TimeInForce
+from ..components.enums import OrderType
 from ..components.exceptions import ApiException
 
 
@@ -270,3 +272,90 @@ class WebSocketClient():
         :rtype: boolean.
         """
         return self.connected
+
+    def cancel_order(self, client_order_id, proprietary):
+        """Make a request to the API and cancel the order specified.
+
+        The market will respond with a client order id, then you should verify the status of the request with this id.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param client_order_id: Client Order ID of the order.
+        :type client_order_id: str
+        :param proprietary: Proprietary of the order.
+        :type proprietary: str
+        :return: Client Order ID of cancellation request returned by the API.
+        :rtype: dict of JSON response.
+        """
+        return self.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
+
+    def send_order(self, ticker, size, side, order_type,
+                   account, price, time_in_force, market,
+                   cancel_previous, iceberg, expire_date,
+                   display_quantity, all_or_none, wsClOrdID):
+        """Send a new order to the Market.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param ticker: Instrument symbol to send in the request. Example: DODic19.
+        :type ticker: str
+        :param size: Order size.
+        :type size: int
+        :param side: Order side. Example: Side.BUY.
+        :type side: Side (Enum).
+        :param order_type: Order type. Example: OrderType.LIMIT.
+        :type order_type: OrderType (Enum).
+        :param account: Account to used.
+        :type account: str
+        :param price: Order price.
+        :type price: float
+        :param time_in_force: Order modifier that defines the active time of the order.
+        :type time_in_force: TimeInForce (Enum).
+        :param market: Market ID related to the instrument.
+        :type market: Market (Enum).
+        :param cancel_previous: True: cancels actives orders that match with the account, side and ticker.
+        False: send the order without cancelling previous ones. Useful for replacing old orders.
+        :type cancel_previous: boolean.
+        :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
+        :type iceberg: boolean.
+        :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
+        :type expire_date: str (Enum).
+        :param display_quantity: Indicates the amount to be disclosed for GTD orders.
+        :type display_quantity: int
+        :type all_or_none: Fill all the order or none. Default False
+        :param all_or_none: bool.
+        :type wsClOrdID: Id for orders. Default None
+        :param wsClOrdID: str.
+        """
+
+        opt_params = ""
+
+        # Adds Optional Parameters
+        if time_in_force is TimeInForce.GoodTillDate:
+            opt_params = opt_params + messages.GOOD_TILL_DATE
+
+        if iceberg:
+            opt_params = opt_params + messages.ICEBERG
+        
+        if wsClOrdID is not None:
+            opt_params = opt_params + messages.WS_CLIENT_ID
+
+        if price is not None and order_type is OrderType.LIMIT:
+            opt_params = opt_params + messages.PRICE
+
+        opt_params = opt_params.format(price=price,
+                                    iceberg=iceberg,
+                                    expire_date=expire_date,
+                                    display_quantity=display_quantity,
+                                    wsClOrdID=wsClOrdID)
+
+        return self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
+                                                                ticker=ticker,
+                                                                size=size,
+                                                                side=side.value.upper(),
+                                                                time_force=time_in_force.value.upper(),
+                                                                account=account,
+                                                                cancel_previous=cancel_previous,
+                                                                all_or_none=all_or_none,
+                                                                order_type=order_type.value,
+                                                                optional_params=opt_params))
