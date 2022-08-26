@@ -27,6 +27,7 @@ class WebSocketClient():
     - For more information about the API go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
     """
+
     def __init__(self, environment):
         """ Initialization of the client.
 
@@ -218,6 +219,14 @@ class WebSocketClient():
         """
         self.ws_connection.close()
 
+    def is_connected(self):
+        """ Checks if the client is connected to the API.
+
+        :return: True: if it is connected. False: if it is not connected.
+        :rtype: boolean.
+        """
+        return self.connected
+
     def market_data_subscription(self, tickers, entries, market, depth):
         """ Creates and sends new Market Data Subscription Message through the connection.
 
@@ -265,18 +274,10 @@ class WebSocketClient():
         # Send the message through the connection.
         self.ws_connection.send(message)
 
-    def is_connected(self):
-        """ Checks if the client is connected to the API.
-
-        :return: True: if it is connected. False: if it is not connected.
-        :rtype: boolean.
-        """
-        return self.connected
-
     def cancel_order(self, client_order_id, proprietary):
-        """Make a request to the API and cancel the order specified.
+        """ Creates and sends Cancel Order Message through the connection.
 
-        The market will respond with a client order id, then you should verify the status of the request with this id.
+        The message will contain the client order id associated to the order.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
@@ -284,20 +285,18 @@ class WebSocketClient():
         :type client_order_id: str
         :param proprietary: Proprietary of the order.
         :type proprietary: str
-        :return: Client Order ID of cancellation request returned by the API.
-        :rtype: dict of JSON response.
         """
-        return self.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
+        self.ws_connection.send(messages.CANCEL_ORDER.format(id=client_order_id, p=proprietary))
 
     def send_order(self, ticker, size, side, order_type,
                    account, price, time_in_force, market,
                    cancel_previous, iceberg, expire_date,
-                   display_quantity, all_or_none, wsClOrdID):
-        """Send a new order to the Market.
+                   display_quantity, all_or_none, ws_client_order_id):
+        """ Creates and sends a New Order Message through the connection.
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-        :param ticker: Instrument symbol to send in the request. Example: DODic19.
+        :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23.
         :type ticker: str
         :param size: Order size.
         :type size: int
@@ -319,13 +318,13 @@ class WebSocketClient():
         :param iceberg: True: if it is an iceberg order. False: if it's not an iceberg order.
         :type iceberg: boolean.
         :param expire_date: Indicates the Expiration date for a GTD order. Example: 20170720.
-        :type expire_date: str (Enum).
+        :type expire_date: str.
         :param display_quantity: Indicates the amount to be disclosed for GTD orders.
         :type display_quantity: int
-        :type all_or_none: Fill all the order or none. Default False
-        :param all_or_none: bool.
-        :type wsClOrdID: Id for orders. Default None
-        :param wsClOrdID: str.
+        :param all_or_none: Fill all the order or none. Default False
+        :type all_or_none: bool.
+        :param ws_client_order_id: ID set by Client for orders. Default None
+        :type ws_client_order_id: str.
         """
 
         opt_params = ""
@@ -336,26 +335,26 @@ class WebSocketClient():
 
         if iceberg:
             opt_params = opt_params + messages.ICEBERG
-        
-        if wsClOrdID is not None:
-            opt_params = opt_params + messages.WS_CLIENT_ID
+
+        if ws_client_order_id is not None:
+            opt_params = opt_params + messages.WS_CLIENT_ORDER_ID
 
         if price is not None and order_type is OrderType.LIMIT:
             opt_params = opt_params + messages.PRICE
 
         opt_params = opt_params.format(price=price,
-                                    iceberg=iceberg,
-                                    expire_date=expire_date,
-                                    display_quantity=display_quantity,
-                                    wsClOrdID=wsClOrdID)
+                                       iceberg=iceberg,
+                                       expire_date=expire_date,
+                                       display_quantity=display_quantity,
+                                       wsClOrdID=ws_client_order_id)
 
-        return self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
-                                                                ticker=ticker,
-                                                                size=size,
-                                                                side=side.value.upper(),
-                                                                time_force=time_in_force.value.upper(),
-                                                                account=account,
-                                                                cancel_previous=cancel_previous,
-                                                                all_or_none=all_or_none,
-                                                                order_type=order_type.value,
-                                                                optional_params=opt_params))
+        self.ws_connection.send(messages.SEND_ORDER.format(market=market.value,
+                                                           ticker=ticker,
+                                                           size=size,
+                                                           side=side.value.upper(),
+                                                           time_force=time_in_force.value.upper(),
+                                                           account=account,
+                                                           cancel_previous=cancel_previous,
+                                                           all_or_none=all_or_none,
+                                                           order_type=order_type.value,
+                                                           optional_params=opt_params))

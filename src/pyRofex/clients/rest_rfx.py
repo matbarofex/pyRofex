@@ -38,7 +38,7 @@ class RestClient:
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-        :param ticker: Ticker of the instrument to send in the request. Example: DODic19
+        :param ticker: Ticker of the instrument to send in the request. Example: DLR/MAR23
         :type ticker: str
         :param start_date: Start date for the trades. Format: yyyy-MM-dd
         :type start_date: str
@@ -89,7 +89,7 @@ class RestClient:
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-        :param ticker: Instrument symbol to send in the request. Example: DODic19
+        :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23
         :type ticker: str
         :param market: Market ID related to the instrument. Default Market.ROFEX.
         :type market: Market (Enum).
@@ -103,7 +103,7 @@ class RestClient:
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-        :param ticker: Instrument symbol to send in the request. Example: DODic19
+        :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23
         :type ticker: str
         :param entries: List of entries to send in the request. Example: [MarketDataEntry.BIDS, MarketDataEntry.OFFERS]
         :type entries: List of MarketDataEntry (Enum).
@@ -193,7 +193,7 @@ class RestClient:
 
         For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-        :param ticker: Instrument symbol to send in the request. Example: DODic19.
+        :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23.
         :type ticker: str
         :param size: Order size.
         :type size: int

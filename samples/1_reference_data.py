@@ -27,7 +27,7 @@ segments = pyRofex.get_segments()
 for segment in segments['segments']:
     print("Segment ID: {0}".format(segment['marketSegmentId']))
 
-# Get a list of all instruments and then count the number of instruments return
+# 3-Get a list of all instruments and then count the number of instruments return
 instruments = pyRofex.get_all_instruments()
 print("Number of Instruments: {0}".format(len(instruments['instruments'])))
 

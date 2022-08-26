@@ -104,6 +104,8 @@ Functions
 * **add_websocket_error_handler** \**: adds a new Error handler to the Websocket Client. This handler is going to be call when a new Error Message is received.
 * **remove_websocket_error_handler** \**: removes an Error handler from the handlers list in the Websocket Client.
 * **set_websocket_exception_handler**: sets an exception handler to the Websocket Client. This handler is going to be called when an Exception occurred in the client.
+* **send_order_via_websocket**: sends a new order to the Market.
+* **cancel_order_via_websocket**: cancels an order.
 
 ** **handlers** are pythons functions that will be call whenever the specific event occurred.
 
@@ -147,7 +149,7 @@ Rest
 
    # Makes a request to the Rest API and get the last price
    # Use the MarketDataEntry enum to specify the data
-   pyRofex.get_market_data(ticker="DODic19",
+   pyRofex.get_market_data(ticker="DLR/MAR23",
                            entries=[pyRofex.MarketDataEntry.LAST])
 
    # Gets all segments
@@ -163,12 +165,12 @@ Rest
    pyRofex.get_all_orders_status()
 
    # Gets historic trades
-   pyRofex.get_trade_history(ticker="DOJun19",
+   pyRofex.get_trade_history(ticker="DLR/JUN23",
                              start_date="2018-12-01",
                              end_date="2019-01-10")
 
    # Sends a Limit order to the market
-   order = pyRofex.send_order(ticker="DODic19",
+   order = pyRofex.send_order(ticker="DLR/MAR23",
                               side=pyRofex.Side.BUY,
                               size=10,
                               price=55.8,
@@ -205,7 +207,7 @@ Websocket
                                      exception_handler=exception_handler)
 
    # Instruments list to subscribe
-   instruments = ["DONov19", "DODic19"]
+   instruments = ["DLR/MAR23", "DLR/ABR23"]
    # Uses the MarketDataEntry enum to define the entries we want to subscribe to
    entries = [pyRofex.MarketDataEntry.BIDS,
               pyRofex.MarketDataEntry.OFFERS,

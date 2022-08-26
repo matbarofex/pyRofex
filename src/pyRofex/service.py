@@ -4,6 +4,7 @@
 
     All the library exposed functionality
 """
+import warnings
 from inspect import getargspec
 
 from .clients.rest_rfx import RestClient
@@ -170,7 +171,7 @@ def get_instrument_details(ticker, market=Market.ROFEX, environment=None):
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-    :param ticker: Instrument symbol to send in the request. Example: DODic19
+    :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23
     :type ticker: str
     :param market: Market ID related to the instrument. Default Market.ROFEX.
     :type market: Market (Enum).
@@ -194,7 +195,7 @@ def get_market_data(ticker, entries=None, depth=1, market=Market.ROFEX, environm
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-    :param ticker: Instrument symbol to send in the request. Example: DODic19
+    :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23
     :type ticker: str
     :param entries: List of entries to send in the request. Default: all available entries.
     Example: [MarketDataEntry.BIDS, MarketDataEntry.OFFERS]
@@ -261,7 +262,7 @@ def send_order(ticker, size, order_type, side,
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-    :param ticker: Instrument symbol to send in the request. Example: DODic19.
+    :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23.
     :type ticker: str
     :param size: Order size.
     :type size: int
@@ -371,7 +372,7 @@ def get_trade_history(ticker, start_date, end_date, market=Market.ROFEX, environ
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-    :param ticker: Instrument symbol to send in the request. Example: DODic19
+    :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23
     :type ticker: str
     :param start_date: Start date for the trades. Format: yyyy-MM-dd
     :type start_date: str
@@ -473,6 +474,7 @@ def get_account_report(account=None, environment=None):
     # Get the client for the environment and make the request
     client = globals.environment_config[environment]["rest_client"]
     return client.get_account_report(account)
+
 
 # ######################################################
 # ##              Websocket functions                 ##
@@ -750,6 +752,7 @@ def set_websocket_exception_handler(handler, environment=None):
     client = globals.environment_config[environment]["ws_client"]
     client.set_exception_handler(handler)
 
+
 def cancel_order_via_websocket(client_order_id, proprietary=None, environment=None):
     """Make a request via WebSocket and cancel the order specified.
 
@@ -763,8 +766,6 @@ def cancel_order_via_websocket(client_order_id, proprietary=None, environment=No
     :type proprietary: str
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
-    :return: Client Order ID of cancellation request returned by the API.
-    :rtype: dict of JSON response.
     """
 
     # Validations
@@ -777,27 +778,26 @@ def cancel_order_via_websocket(client_order_id, proprietary=None, environment=No
 
     # Get the client for the environment and make the request
     client = globals.environment_config[environment]["ws_client"]
-    return client.cancel_order(client_order_id,
-                               proprietary)
+    client.cancel_order(client_order_id, proprietary)
 
 
 def send_order_via_websocket(ticker, size, side, order_type,
-               all_or_none = False,
-               market=Market.ROFEX,
-               time_in_force=TimeInForce.DAY,
-               account=None,
-               price=None,
-               cancel_previous=False,
-               iceberg=False,
-               expire_date=None,
-               display_quantity=None,
-               environment=None,
-               wsClOrdID=None):
+                             all_or_none=False,
+                             market=Market.ROFEX,
+                             time_in_force=TimeInForce.DAY,
+                             account=None,
+                             price=None,
+                             cancel_previous=False,
+                             iceberg=False,
+                             expire_date=None,
+                             display_quantity=None,
+                             environment=None,
+                             ws_client_order_id=None):
     """Send orders via websocket
 
     For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
 
-    :param ticker: Instrument symbol to send in the request. Example: DODic19.
+    :param ticker: Instrument symbol to send in the request. Example: DLR/MAR23.
     :type ticker: str
     :param size: Order size.
     :type size: int
@@ -826,10 +826,8 @@ def send_order_via_websocket(ticker, size, side, order_type,
     :type display_quantity: int
     :param environment: Environment used. Default None: the default environment is used.
     :type environment: Environment (Enum).
-    :type wsClOrdID: Id for orders. Default None
-    :param wsClOrdID: str.
-    :return: Client Order ID and Proprietary of the order returned by the API.
-    :rtype: dict of JSON response.
+    :param ws_client_order_id: ID set by Client for orders. Default None
+    :type ws_client_order_id: str.
     """
 
     # Validations
@@ -843,11 +841,11 @@ def send_order_via_websocket(ticker, size, side, order_type,
     if account is None:
         account = globals.environment_config[environment]["account"]
 
-    # Make the order
-    return client.send_order(ticker, size, side, order_type, account,
-                             price, time_in_force, market, cancel_previous,
-                             iceberg, expire_date, display_quantity,
-                             all_or_none, wsClOrdID)
+    # Send the order
+    client.send_order(ticker, size, side, order_type, account,
+                      price, time_in_force, market, cancel_previous,
+                      iceberg, expire_date, display_quantity,
+                      all_or_none, ws_client_order_id)
 
 
 # ######################################################
@@ -903,26 +901,6 @@ def _validate_initialization(environment):
         raise ApiException("The Environment is not initialized.")
 
 
-def _validate_market_data_entries(entries):
-    """Validate if the list of entries are instance of the MarketDataEntry enum.
-
-    If the entry list is None or Empty, the full list of MarketDataEntry will be return.
-
-    :param entries: list of entries to be validated.
-    :type entries: list of MarketDataEntry (Enum).
-    :return: a list of validated MarketDataEntry.
-    :rtype: List of MarketDataEntry (Enum).
-    """
-    if entries is None:
-        entries = [entry for entry in MarketDataEntry]
-    else:
-        for entry in entries:
-            if not isinstance(entry, MarketDataEntry):
-                raise ApiException("Invalid Market Data Entry: " + str(entry))
-
-    return entries
-
-
 def _validate_websocket_connection(environment):
     """Checks if the websocket connection was established.
 
@@ -963,3 +941,23 @@ def _validate_handler(handler):
     fun_arg_spec = getargspec(handler)
     if not fun_arg_spec.args and not fun_arg_spec.varargs:
         print("Handler '{handler}' can't receive an argument.".format(handler=handler))
+
+
+def _validate_market_data_entries(entries):
+    """Validate if the list of entries are instance of the MarketDataEntry enum.
+
+    If the entry list is None or Empty, the full list of MarketDataEntry will be return.
+
+    :param entries: list of entries to be validated.
+    :type entries: list of MarketDataEntry (Enum).
+    :return: a list of validated MarketDataEntry.
+    :rtype: List of MarketDataEntry (Enum).
+    """
+    if entries is None:
+        entries = [entry for entry in MarketDataEntry]
+    else:
+        for entry in entries:
+            if not isinstance(entry, MarketDataEntry):
+                print("WARNING: Market Data Entry not defined: " + str(entry))
+
+    return entries
