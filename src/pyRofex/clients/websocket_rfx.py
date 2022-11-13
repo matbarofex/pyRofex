@@ -367,8 +367,7 @@ def my_callback(self, callback, *args):
             callback(*args)
 
         except Exception as e:
-            _logging.error("error from callback {}: {}".format(callback, e))
             if self.on_error:
-                self.on_error(self, e)
+                self.on_error(e)
 
 websocket.WebSocketApp._callback = my_callback
