@@ -71,6 +71,7 @@ class MarketDataEntry(Enum):
     INDEX_VALUE: Calculated Index Value (only for Index)
     TRADE_EFFECTIVE_VOLUME: Effective traded volume.
     NOMINAL_VOLUME: Nominal traded volume.
+    TRADE_COUNT: Number or trades made
     """
     BIDS = "BI"
     OFFERS = "OF"
@@ -86,3 +87,4 @@ class MarketDataEntry(Enum):
     TRADE_EFFECTIVE_VOLUME = "EV"
     NOMINAL_VOLUME = "NV"
     ACP = "ACP"
+    TRADE_COUNT = "TC"
