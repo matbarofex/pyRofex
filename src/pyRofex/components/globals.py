@@ -44,5 +44,21 @@ environment_config = {
         "proprietary": "api",
         "heartbeat": 30,
         "ssl_opt": None
+    },
+    Environment.DEMO: {
+        "url": "https://api.demo.xoms.com.ar/",
+        "ws": "wss://api.demo.xoms.com.ar/",
+        "ssl": True,
+        "proxies": None,
+        "rest_client": None,
+        "ws_client": None,
+        "token": None,
+        "user": None,
+        "password": None,
+        "account": None,
+        "initialized": False,
+        "proprietary": "ISV_PBCP",
+        "heartbeat": 30,
+        "ssl_opt": None
     }
 }

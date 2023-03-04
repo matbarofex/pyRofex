@@ -11,9 +11,11 @@ class Environment(Enum):
     """Available environments to used.
     REMARKET: Demo environment used for testing purpose.
     LIVE: ROFEX production environment.
+    DEMO: Demo enviroment used for development purpose
     """
     REMARKET = 1
     LIVE = 2
+    DEMO = 3
 
 
 class TimeInForce(Enum):
