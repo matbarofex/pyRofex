@@ -20,7 +20,7 @@ class RestClient:
     For more information about the API go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
     """
 
-    def __init__(self, environment):
+    def __init__(self, environment, active_token=None):
         """Initialization of the Client.
 
         :param environment: the environment that will be associated with the client.
@@ -31,7 +31,11 @@ class RestClient:
         self.environment = globals.environment_config[environment]
 
         # Get the authentication Token.
-        self.update_token()
+        if not active_token:
+            self.update_token()
+        else:
+            self.environment["token"] = active_token
+            self.environment["initialized"] = True
 
     def get_trade_history(self, ticker, start_date, end_date, market):
         """Makes a request to the API and get trade history for the instrument.

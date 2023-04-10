@@ -22,7 +22,7 @@ from .components.enums import Market
 # ######################################################
 
 
-def initialize(user, password, account, environment, proxies=None, ssl_opt=None):
+def initialize(user, password, account, environment, proxies=None, ssl_opt=None, active_token=None):
     """ Initialize the specified environment.
 
      Set the default user, password and account for the environment.
@@ -39,10 +39,12 @@ def initialize(user, password, account, environment, proxies=None, ssl_opt=None)
     :type proxies: dict
     :param ssl_opt: (optional) Dictionary with ssl options for websocket connection.
     :type ssl_opt: dict
+    :param active_token: (optional) Already Active token. If None, it will request new token on authentication.
+    :type active_token: str
     """
     _validate_environment(environment)
     _set_environment_parameters(user, password, account, environment, proxies, ssl_opt)
-    globals.environment_config[environment]["rest_client"] = RestClient(environment)
+    globals.environment_config[environment]["rest_client"] = RestClient(environment, active_token)
     globals.environment_config[environment]["ws_client"] = WebSocketClient(environment)
     set_default_environment(environment)
 
