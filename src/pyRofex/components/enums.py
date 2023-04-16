@@ -16,6 +16,29 @@ class Environment(Enum):
     LIVE = 2
 
 
+class CFICode(Enum):
+    """Identifies the type of instrument.
+    ESXXXX: Stock (Accion)
+    DBXXXX: Bond (Bono)
+    OCASPS: Call Option on Stock (Opción Call sobre Acción)
+    OPASPS: Put Option on Stock (Opción Put sobre Acción)
+    FXXXSX: Future (Futuro)
+    OPAFXS: Put Option on Futures (Opción Put sobre Futuro)
+    OCAFXS: Call Option on Futures (Opción Call sobre Futuro)
+    EMXXXX: CEDEAR
+    DBXXFR: Corporate Bond (Obligaciones Negociables)
+    """
+    STOCK = 'ESXXXX'
+    BOND = 'DBXXXX'
+    CALL_STOCK = 'OCASPS'
+    PUT_STOCK = 'OPASPS'
+    FUTURE = 'FXXXSX'
+    PUT_FUTURE = 'OPAFXS'
+    CALL_FUTURE = 'OCAFXS'
+    CEDEAR = 'EMXXXX'
+    ON = 'DBXXFR'
+
+    
 class TimeInForce(Enum):
     """Time Modifier of the order that defines the time the order will be active.
     DAY: Order valid during the day. It will expires when the market close.
@@ -34,6 +57,25 @@ class Market(Enum):
     ROFEX: ROFEX Exchange.
     """
     ROFEX = 'ROFX'
+
+
+class MarketSegment(Enum):
+    """Identifies the Market Segment associated to the instruments.
+    DDF: División Derivados Financieros.
+    DDA: División Derivados Agropecuarios.
+    DUAL: Instruments on DDF and DDA.
+    U-DDF:
+    U-DDA:
+    U-DUAL:
+    MERV: Matba Rofex External Markets. MERVAL
+    """
+    DDF = "DDF"
+    DDA = "DDA"
+    DUAL = "DUAL"
+    U_DDF = "U-DDF"
+    U_DDA = "U-DDA"
+    U_DUAL = "U-DUAL"
+    MERV = "MERV"
 
 
 class Side(Enum):
