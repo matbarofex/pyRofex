@@ -9,9 +9,11 @@ from .enums import TimeInForce
 
 auth = "auth/getToken"
 segments = "rest/segment/all"
-instruments = "rest/instruments/all"
-detailed_instruments = "rest/instruments/details"
-instrument_details = "rest/instruments/detail?symbol={ticker}&marketId={market}"
+instruments = {"all": "rest/instruments/all",
+               "details": "rest/instruments/details",
+               "detail": "rest/instruments/detail?symbol={ticker}&marketId={market}",
+               "by_cfi": "rest/instruments/byCFICode?CFICode={cfi_code}",
+               "by_segments": "rest/instruments/bySegment?MarketSegmentID={market_segment}&MarketID={market}"}
 market_data = "rest/marketdata/get?marketId={m}&symbol={s}&entries={e}&depth={d}"
 historic_trades = "rest/data/getTrades?marketId={m}&symbol={s}&dateFrom={df}&dateTo={dt}"
 order_status = "rest/order/id?clOrdId={c}&proprietary={p}"

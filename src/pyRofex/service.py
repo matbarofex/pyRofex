@@ -128,6 +128,30 @@ def get_segments(environment=None):
     return response
 
 
+def get_instruments(endpoint='all', environment=None, **kwargs):
+    """Make a request to the API and get the information depending on the given endpoint.
+
+    Valid 'endpoints' are: 'all', 'details', 'detail', 'by_cfi', 'by_segments'.
+
+    For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+    :param endpoint: key to access the required instruments info endpoint. Default 'all'
+    :type endpoint: str
+    :param environment: The environment used. Default None: the default environment is used.
+    :type environment: Environment (Enum).
+    :return: A list of valid info returned by the API depending on the given valid endpoint.
+    :rtype: dict of JSON response.
+    """
+
+    # Validations
+    environment = _validate_environment(environment)
+    _validate_initialization(environment)
+
+    # Get the client for the environment and start the connection
+    client = globals.environment_config[environment]["rest_client"]
+    return client.get_instruments(endpoint, **kwargs)
+
+
 def get_all_instruments(environment=None):
     """Make a request to the API and get a list of all available instruments.
 

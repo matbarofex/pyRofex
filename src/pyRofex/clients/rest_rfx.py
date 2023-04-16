@@ -4,13 +4,17 @@
 
     Defines a Rest Client that implements ROFEX Rest API.
 """
+import re
 import requests
 import simplejson
 
 from ..components import urls
 from ..components import globals
+from ..components.enums import Market
+from ..components.enums import CFICode
 from ..components.enums import OrderType
 from ..components.enums import TimeInForce
+from ..components.enums import MarketSegment
 from ..components.exceptions import ApiException
 
 
@@ -68,6 +72,63 @@ class RestClient:
         """
         return self.api_request(urls.segments)
 
+    def get_instruments(self, endpoint, **kwargs):
+        """Make a request to the API and get the information depending on the given endpoint.
+
+        Valid 'endpoints' are: 'all', 'details', 'detail', 'by_cfi', 'by_segments'.
+
+        For more detailed information go to: https://apihub.primary.com.ar/assets/docs/Primary-API.pdf
+
+        :param endpoint: key to access the required instruments info endpoint. Default 'all'
+        :type endpoint: str
+        :return: A list of valid info returned by the API depending on the given valid endpoint.
+        :rtype: dict of JSON response.
+        """
+        # Check if endpoint arg is a valid one.
+        if endpoint not in urls.instruments.keys():
+            raise ApiException("Valid endpoints are: 'all', 'details', 'detail', 'by_cfi', 'by_segments'")
+
+        # Get url template
+        url = urls.instruments[endpoint]
+
+        # Define the regular expression pattern to get value between {} in a string
+        pattern = r'\{(.*?)\}'
+
+        # Find all required args in url template
+        required_args = re.findall(pattern, url)
+
+        # Validate if keys in kwargs are required in url template and check if an Enum to get correct string value
+        # for final endpoint url
+        for k, v in kwargs.items():
+            # Check if keys in kwargs are the required args
+            if k in required_args:
+                # Validate if value is an instance of Enum class and get the value instead of enum type
+                if isinstance(v, MarketSegment):
+                    kwargs[k] = v.value
+                elif isinstance(v, Market):
+                    kwargs[k] = v.value
+                elif isinstance(v, CFICode):
+                    kwargs[k] = v.value
+                elif isinstance(v, list):
+                    for idx, i in enumerate(v):
+                        v[idx] = i.value
+
+        response = None
+        for k, v in kwargs.items():
+            if isinstance(v, list):
+                for i in v:
+                    kwargs[k] = i
+                    if not response:
+                        response = self.api_request(urls.instruments[endpoint].format(**kwargs))
+                    else:
+                        response['instruments'] = \
+                            response['instruments'] + \
+                            self.api_request(urls.instruments[endpoint].format(**kwargs))['instruments']
+
+        if not response:
+            response = self.api_request(urls.instruments[endpoint].format(**kwargs))
+        return response
+
     def get_all_instruments(self):
         """Make a request to the API and get a list of all available instruments.
 
@@ -76,7 +137,7 @@ class RestClient:
         :return: A list of valid instruments returned by the API.
         :rtype: dict of JSON response.
         """
-        return self.api_request(urls.instruments)
+        return self.api_request(urls.instruments['all'])
 
     def get_detailed_instruments(self):
         """Make a request to the API and get a list of all available instruments.
@@ -86,7 +147,7 @@ class RestClient:
         :return: A list of valid instruments returned by the API.
         :rtype: dict of JSON response.
         """
-        return self.api_request(urls.detailed_instruments)
+        return self.api_request(urls.instruments['details'])
 
     def get_instrument_details(self, ticker, market):
         """Make a request to the API and get the details of the instrument.
@@ -100,7 +161,7 @@ class RestClient:
         :return: Details of the instrument returned by the API.
         :rtype: dict of JSON response.
         """
-        return self.api_request(urls.instrument_details.format(ticker=ticker, market=market.value))
+        return self.api_request(urls.instruments['detail'].format(ticker=ticker, market=market.value))
 
     def get_market_data(self, ticker, entries, depth, market):
         """Make a request to the API to get the Market Data Entries of the specified instrument.
