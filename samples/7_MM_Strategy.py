@@ -140,7 +140,7 @@ class MyStrategy:
 
 
 if __name__ == "__main__":
-    MyStrategy("DLR/MAR22", 10, 0.05)
+    MyStrategy("DLR/ENE24", 10, 0.05)
 
 
 

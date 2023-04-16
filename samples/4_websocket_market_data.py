@@ -49,7 +49,7 @@ pyRofex.init_websocket_connection(market_data_handler=market_data_handler,
 
 
 # 4-Subscribes to receive market data messages
-instruments = ["DLR/FEB22", "DLR/MAR22"]  # Instruments list to subscribe
+instruments = ["DLR/DIC23", "DLR/ENE24"]  # Instruments list to subscribe
 entries = [pyRofex.MarketDataEntry.BIDS,
            pyRofex.MarketDataEntry.OFFERS,
            pyRofex.MarketDataEntry.LAST]
