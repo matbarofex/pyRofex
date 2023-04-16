@@ -145,6 +145,13 @@ Finally, sets the environment as the default one. (you can change it with the se
                       account="sampleAccount",
                       environment=pyRofex.Environment.REMARKET)
 
+   # In case you have a previously generated and active token, you will be able to do the following
+   pyRofex.initialize(user="sampleUser",
+                      password="samplePassword",
+                      account="sampleAccount",
+                      environment=pyRofex.Environment.REMARKET,
+                      active_token="activeToken")
+
 
 Rest
 ^^^^
@@ -161,8 +168,26 @@ Rest
    # Gets available instruments list
    pyRofex.get_all_instruments()
 
+   # Alternative option to get all available instruments list
+   pyRofex.get_instruments('all')
+
+   # Alternative option to get instruments by given cfi code:
+   pyRofex.get_instruments('by_cfi',
+                           cfi_code=[pyRofex.CFICode.STOCK,
+                                     pyRofex.CFICode.BOND,
+                                     pyRofex.CFICode.CEDEAR])
+
+   # Alternative option to get instruments by given segments
+   pyRofex.get_instruments('by_segments',
+                           market=pyRofex.Market.ROFEX,
+                           market_segment=[pyRofex.MarketSegment.DDF,
+                                           pyRofex.MarketSegment.MERV])
+
    # Gets detailed instruments list
    pyRofex.get_detailed_instruments()
+
+   # Alternative option to get detailed instruments list
+   pyRofex.get_instruments('details')
 
    # Get all order report for the configured account
    pyRofex.get_all_orders_status()
