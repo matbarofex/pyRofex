@@ -23,6 +23,7 @@ from .service import send_order_via_websocket
 from .service import cancel_order_via_websocket
 
 from .service import get_segments
+from .service import get_instruments
 from .service import get_all_instruments
 from .service import get_detailed_instruments
 from .service import get_instrument_details
@@ -37,8 +38,10 @@ from .service import get_detailed_position
 from .service import get_account_report
 
 from .components.enums import Environment
+from .components.enums import CFICode
 from .components.enums import MarketDataEntry
 from .components.enums import Market
+from .components.enums import MarketSegment
 from .components.enums import OrderType
 from .components.enums import Side
 from .components.enums import TimeInForce

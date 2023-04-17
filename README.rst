@@ -66,6 +66,7 @@ Functions
 """""""""
 
 * **get_segments**\ : gets a list of valid segments.
+* **get_instruments**\ : gets data of instruments by passing arguments for specific info.
 * **get_all_instruments**\ : gets a list of all available instruments.
 * **get_detailed_instruments**\ : gets a detailed list of all available instruments.
 * **get_instrument_details**\ : gets the details of a single instrument.
@@ -115,8 +116,10 @@ Enumerations
 The library also provides some enumerations to help developers avoid errors and improve readability. Next, you have the list of available enums:
 
 * **Environment**: Identifies the environment to use. (REMARKET: Demo environment; LIVE: Production environment)
+* **CFICode**: Identifies the type of instrument.
 * **MarketDataEntry**: Identifies market data entries for an instrument.
 * **Market**: Market ID associated to the instruments.
+* **MarketSegment**: Market Segment ID associated to the instruments.
 * **OrderType**: Identifies the different order types.
 * **Side**\ : Identifies the side of an order.
 * **TimeInForce**: Time modifier of the order that defines the time the order will be active.
@@ -142,6 +145,13 @@ Finally, sets the environment as the default one. (you can change it with the se
                       account="sampleAccount",
                       environment=pyRofex.Environment.REMARKET)
 
+   # In case you have a previously generated and active token, you will be able to do the following
+   pyRofex.initialize(user="sampleUser",
+                      password="samplePassword",
+                      account="sampleAccount",
+                      environment=pyRofex.Environment.REMARKET,
+                      active_token="activeToken")
+
 
 Rest
 ^^^^
@@ -149,7 +159,7 @@ Rest
 
    # Makes a request to the Rest API and get the last price
    # Use the MarketDataEntry enum to specify the data
-   pyRofex.get_market_data(ticker="DLR/MAR23",
+   pyRofex.get_market_data(ticker="DLR/DIC23",
                            entries=[pyRofex.MarketDataEntry.LAST])
 
    # Gets all segments
@@ -158,8 +168,26 @@ Rest
    # Gets available instruments list
    pyRofex.get_all_instruments()
 
+   # Alternative option to get all available instruments list
+   pyRofex.get_instruments('all')
+
+   # Alternative option to get instruments by given cfi code:
+   pyRofex.get_instruments('by_cfi',
+                           cfi_code=[pyRofex.CFICode.STOCK,
+                                     pyRofex.CFICode.BOND,
+                                     pyRofex.CFICode.CEDEAR])
+
+   # Alternative option to get instruments by given segments
+   pyRofex.get_instruments('by_segments',
+                           market=pyRofex.Market.ROFEX,
+                           market_segment=[pyRofex.MarketSegment.DDF,
+                                           pyRofex.MarketSegment.MERV])
+
    # Gets detailed instruments list
    pyRofex.get_detailed_instruments()
+
+   # Alternative option to get detailed instruments list
+   pyRofex.get_instruments('details')
 
    # Get all order report for the configured account
    pyRofex.get_all_orders_status()
@@ -170,7 +198,7 @@ Rest
                              end_date="2019-01-10")
 
    # Sends a Limit order to the market
-   order = pyRofex.send_order(ticker="DLR/MAR23",
+   order = pyRofex.send_order(ticker="DLR/DIC23",
                               side=pyRofex.Side.BUY,
                               size=10,
                               price=55.8,
@@ -207,7 +235,7 @@ Websocket
                                      exception_handler=exception_handler)
 
    # Instruments list to subscribe
-   instruments = ["DLR/MAR23", "DLR/ABR23"]
+   instruments = ["DLR/DIC23", "DLR/ENE24"]
    # Uses the MarketDataEntry enum to define the entries we want to subscribe to
    entries = [pyRofex.MarketDataEntry.BIDS,
               pyRofex.MarketDataEntry.OFFERS,

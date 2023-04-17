@@ -64,7 +64,7 @@ pyRofex.init_websocket_connection(order_report_handler=order_report_handler,
 pyRofex.order_report_subscription()
 
 # 5-Send an order via websocket message then check that order_report_handler is called
-pyRofex.send_order_via_websocket(ticker="DLR/MAR23",
+pyRofex.send_order_via_websocket(ticker="DLR/ENE24",
                                  side=pyRofex.Side.BUY,
                                  size=100,
                                  order_type=pyRofex.OrderType.LIMIT,

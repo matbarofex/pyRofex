@@ -59,7 +59,7 @@ pyRofex.order_report_subscription(account="InvalidAccount")
 
 
 # 6-Send an order to check that order_report_handler is called
-pyRofex.send_order(ticker="DLR/MAR22",
+pyRofex.send_order(ticker="DLR/ENE24",
                    side=pyRofex.Side.BUY,
                    size=10,
                    order_type=pyRofex.OrderType.MARKET)

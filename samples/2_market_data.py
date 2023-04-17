@@ -27,7 +27,7 @@ pyRofex.initialize(user="XXXXXXX",
                    environment=pyRofex.Environment.REMARKET)
 
 # 2-Set the instrument to use
-instrument = "DLR/MAR22"
+instrument = "DLR/ENE24"
 
 # 3-Get the two Best Bids and Best Offers for the instrument (using depth parameter)
 entries = [pyRofex.MarketDataEntry.BIDS, pyRofex.MarketDataEntry.OFFERS, pyRofex.MarketDataEntry.LAST]
