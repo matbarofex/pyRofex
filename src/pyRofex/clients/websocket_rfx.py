@@ -371,3 +371,6 @@ def my_callback(self, callback, *args):
                 self.on_error(e)
 
 websocket.WebSocketApp._callback = my_callback
+
+# Create function IsAlive
+threading.Thread.IsAlive = threading.Thread.is_alive
