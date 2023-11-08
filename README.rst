@@ -35,6 +35,7 @@ To get new credentials:
 
 Dependencies
 ------------
+- `python <https://www.python.org/downloads/>`_\: Between 3.7 and 3.8
 - `requests <https://pypi.org/project/requests/>`_\: 2.20.0 or higher
 - `simplejson <https://pypi.org/project/simplejson/>`_\: 3.10.0 or higher
 - `enum34 <https://pypi.org/project/enum34/>`_\: 1.1.6 or higher
