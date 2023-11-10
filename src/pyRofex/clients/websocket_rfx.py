@@ -358,3 +358,16 @@ class WebSocketClient():
                                                            all_or_none=all_or_none,
                                                            order_type=order_type.value,
                                                            optional_params=opt_params))
+
+# Override _callback method for compatibility with Python 3.9
+
+def my_callback(self, callback, *args):
+    if callback:
+        try:
+            callback(*args)
+
+        except Exception as e:
+            if self.on_error:
+                self.on_error(e)
+
+websocket.WebSocketApp._callback = my_callback
