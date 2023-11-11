@@ -5,7 +5,7 @@
     All the library exposed functionality
 """
 import warnings
-from inspect import getargspec
+from inspect import getfullargspec as getargspec
 
 from .clients.rest_rfx import RestClient
 from .clients.websocket_rfx import WebSocketClient
