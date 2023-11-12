@@ -6,7 +6,7 @@
 """
 import threading
 import time
-import ssl
+import logging
 
 import websocket
 import simplejson
@@ -149,7 +149,7 @@ class WebSocketClient():
         if self.ws_connection.sock is None or not self.ws_connection.sock.connected:
             self.on_exception(ApiException("Connection could not be established."))
 
-    def on_message(self, message):
+    def on_message(self, ws, message):
         """ Called when a new message is received through the connection.
 
         :param message: message received.
@@ -186,7 +186,7 @@ class WebSocketClient():
         except Exception as e:
             self.on_exception(e)
 
-    def on_error(self, exception):
+    def on_error(self, ws, exception):
         """ Called when an error occurred within the connection.
 
         :param exception: exception raised.
@@ -204,13 +204,14 @@ class WebSocketClient():
         if self.exception_handler is not None:
             self.exception_handler(exception)
 
-    def on_close(self):
-        """ Called when the connection was closed.
+    def on_close(self, ws, close_status_code, close_msg):
+        """ Called when the connection is closed.
         """
+        logging.log(logging.INFO, f"connection closed. code: {close_status_code}. message: {close_msg}")
         self.connected = False
 
-    def on_open(self):
-        """ Called when the connection was opened.
+    def on_open(self, ws):
+        """ Called when the connection is opened.
         """
         self.connected = True
 

@@ -2,7 +2,7 @@
 """
     pyRofex: Python connector for ROFEX Rest and Websocket APIs.
 
-    This modules expose functions and enumerations of the library.
+    This module expose functions and enumerations of the library.
 """
 from .service import initialize
 from .service import set_default_environment
@@ -46,4 +46,4 @@ from .components.enums import OrderType
 from .components.enums import Side
 from .components.enums import TimeInForce
 
-__version__ = "0.5.0rc1"
+__version__ = "0.5.0"

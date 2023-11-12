@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="pyRofex",
-    version="0.5.0rc1",
+    version="0.5.0",
     author="Franco Zanuso",
     author_email="francozanuso89@gmail.com",
     description="Python connector for ROFEX's Rest and Websocket APIs.",
@@ -18,7 +18,7 @@ setuptools.setup(
         'requests>=2.20.0',
         'simplejson>=3.10.0',
         'enum34>=1.1.6',
-        'websocket-client>=0.54.0,<0.58.0',
+        'websocket-client>=1.6.4',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

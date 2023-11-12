@@ -4,8 +4,8 @@
 
     All the library exposed functionality
 """
-import warnings
-from inspect import getargspec
+import logging
+from inspect import getfullargspec
 
 from .clients.rest_rfx import RestClient
 from .clients.websocket_rfx import WebSocketClient
@@ -535,7 +535,7 @@ def init_websocket_connection(market_data_handler=None,
     # Gets the client for the environment
     client = globals.environment_config[environment]["ws_client"]
 
-    # Checks handlers and adds the them into the client.
+    # Checks handlers and adds them into the client.
     if market_data_handler is not None:
         _validate_handler(market_data_handler)
         client.add_market_data_handler(market_data_handler)
@@ -549,7 +549,7 @@ def init_websocket_connection(market_data_handler=None,
         client.add_error_handler(error_handler)
 
     if exception_handler is not None:
-        _validate_handler(error_handler)
+        _validate_handler(exception_handler)
         client.set_exception_handler(exception_handler)
 
     # Initiates the connection with the Websocket API
@@ -964,9 +964,9 @@ def _validate_handler(handler):
         raise ApiException("Handler '{handler}' is not callable.".format(handler=handler))
 
     # Checks if function can receive an argument
-    fun_arg_spec = getargspec(handler)
+    fun_arg_spec = getfullargspec(handler)
     if not fun_arg_spec.args and not fun_arg_spec.varargs:
-        print("Handler '{handler}' can't receive an argument.".format(handler=handler))
+        logging.error("Handler '{handler}' can't receive an argument.".format(handler=handler))
 
 
 def _validate_market_data_entries(entries):
@@ -984,6 +984,6 @@ def _validate_market_data_entries(entries):
     else:
         for entry in entries:
             if not isinstance(entry, MarketDataEntry):
-                print("WARNING: Market Data Entry not defined: " + str(entry))
+                logging.warn("WARNING: Market Data Entry not defined: " + str(entry))
 
     return entries
