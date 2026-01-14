@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyRofex"
+version = "0.5.1"
+description = "Python connector for ROFEX's Rest and Websocket APIs."
+readme = "README.rst"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Genaro Vogelius", email = "genagevo@gmail.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Software Development",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "simplejson>=3.20.0",
+    "websocket-client>=1.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/GenaroVogelius/pyRofex"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
