@@ -343,7 +343,7 @@ class RestClient:
         response = requests.get(self._url(path),
                                 headers=headers,
                                 verify=self.environment["ssl"],
-                                proxies=self.environment["proxies"])
+                                proxies=self.environment["proxies"], timeout=30)
 
         # Checks if the response code is 401 (Unauthorized)
         if response.status_code == 401:
@@ -365,7 +365,7 @@ class RestClient:
         response = requests.post(self._url(urls.auth),
                                  headers=headers,
                                  verify=self.environment["ssl"],
-                                 proxies=self.environment["proxies"])
+                                 proxies=self.environment["proxies"], timeout=30)
 
         if not response.ok:
             raise ApiException("Authentication fails. Incorrect User or Password")
